@@ -6,3 +6,49 @@
 .App > div {
   margin-right: 50px;
 }
+
+.isDone {
+  text-decoration: line-through;
+  font-weight: bold;
+  color: hotpink;
+  opacity: 0.5;
+}
+
+.notIsDone {
+  font-weight: bold;
+  color: limegreen;
+}
+
+.btn {
+  background-color: darkcyan;
+  border: none;
+  padding: 5px;
+  margin: 2px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+}
+
+.btn:hover {
+  background-color: #015252;
+}
+
+.activeBtn {
+  background-color: maroon;
+}
+
+.activeBtn:hover {
+  cursor: not-allowed;
+  background-color: maroon;
+}
+
+.error {
+  border: 2px solid hotpink;
+  outline: none;
+}
+
+.errorMessage {
+  font-weight: bold;
+  color: hotpink;
+}
