@@ -31,7 +31,6 @@ const App: React.FC = () => {
     ]
   );
 
-
   const [tasks, setTasks] = useState<TaskStateType>({
     [todolistId_1]: [
       {id: v1(), title: 'HTML&CSS', isDone: true},
