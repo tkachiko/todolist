@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {createTheme, CssBaseline, ThemeProvider} from '@mui/material';
+import {Provider} from 'react-redux';
+import {store} from './state/store';
+import {AppWithRedux} from './AppWithRedux';
 
 let theme = createTheme({
   palette: {
@@ -27,7 +29,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <ThemeProvider theme={theme}>
     <CssBaseline/>
-    <App/>
+    <Provider store={store}>
+    <AppWithRedux/>
+    </Provider>
   </ThemeProvider>
 );
 
