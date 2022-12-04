@@ -6,7 +6,7 @@ import {AddItemForm} from './components/AddItemForm';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@mui/material';
 import {Menu} from '@mui/icons-material';
 
-export type TodolistsType = {
+export type TodolistType = {
   id: string
   title: string
   filter: FilterType
@@ -24,7 +24,7 @@ export type FilterType = 'all' | 'active' | 'completed'
 const App: React.FC = () => {
   const todolistId_1 = v1();
   const todolistId_2 = v1();
-  const [todolists, setTodolists] = useState<Array<TodolistsType>>(
+  const [todolists, setTodolists] = useState<Array<TodolistType>>(
     [
       {id: todolistId_1, title: 'What to learn', filter: 'all'},
       {id: todolistId_2, title: 'What to buy', filter: 'all'},
@@ -79,7 +79,7 @@ const App: React.FC = () => {
   //todolists
   const addTodolist = (title: string): void => {
     const newTodolistId: string = v1();
-    const newTodolist: TodolistsType = {
+    const newTodolist: TodolistType = {
       id: newTodolistId,
       title,
       filter: 'all'
