@@ -2,6 +2,8 @@ import React, {ChangeEvent} from 'react';
 import {FilterType, TaskType} from '../App';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
+import {Button, ButtonGroup, Checkbox, IconButton, List, ListItem, Typography} from '@mui/material';
+import {RemoveCircle} from '@mui/icons-material';
 
 type TodolistPropsType = {
   todolistId: string
@@ -25,23 +27,34 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
     const changeTaskTitle = (title: string) => props.changeTaskTitle(t.id, title, props.todolistId);
 
     return (
-      <li key={t.id}
-          className={t.isDone ? 'isDone' : 'notIsDone'}
+      <ListItem
+        key={t.id}
+        className={t.isDone ? 'isDone' : 'notIsDone'}
+        style={{
+          padding: '0px',
+          justifyContent: 'space-between',
+          textDecoration: t.isDone ? 'line-through' : 'none'
+        }}
       >
-        <input
-          type="checkbox"
+        <Checkbox
           checked={t.isDone}
           onChange={changeTaskStatusHandler}
+          size={'small'}
         />
         <EditableSpan title={t.title} changeTitle={changeTaskTitle}/>
-        <button onClick={removeTask}>✖</button>
-      </li>
+        <IconButton onClick={removeTask}>
+          <RemoveCircle
+            color={'secondary'}
+            fontSize={'small'}
+          />
+        </IconButton>
+      </ListItem>
     );
   };
 
   const tasksList = props.tasks.length
-    ? <ul>{props.tasks.map(getTasksListItem)}</ul>
-    : <span>Your task list is empty :(</span>;
+    ? <List>{props.tasks.map(getTasksListItem)}</List>
+    : <div style={{margin: '10px 0'}}>Your task list is empty :(</div>;
   const handlerCreator = (filter: FilterType) => () => {
     props.changeTodolistFilter(filter, props.todolistId);
   };
@@ -55,30 +68,47 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
 
   return (
     <div>
-      <div>
-        <h3>
-          <EditableSpan title={props.title} changeTitle={changeTodolistTitle}/>
-          <button onClick={removeTodolist}>x</button>
-        </h3>
-        <AddItemForm addItem={addTask}/>
-      </div>
+      <Typography
+        variant={'h5'}
+        align={'center'}
+        style={{fontWeight: 'bold', marginBottom: '20px'}}
+      >
+        <EditableSpan title={props.title} changeTitle={changeTodolistTitle}/>
+        <IconButton
+          size={'small'}
+          onClick={removeTodolist}
+        ><RemoveCircle
+          color={'secondary'}
+          fontSize={'small'}
+        /></IconButton>
+      </Typography>
+      <AddItemForm addItem={addTask}/>
       {tasksList}
       <div>
-        <button
-          onClick={handlerCreator('all')}
-          className={props.filter === 'all' ? 'activeBtn btn' : 'btn'}
-        >All
-        </button>
-        <button
-          onClick={handlerCreator('active')}
-          className={props.filter === 'active' ? 'activeBtn btn' : 'btn'}
-        >Active
-        </button>
-        <button
-          onClick={handlerCreator('completed')}
-          className={props.filter === 'completed' ? 'activeBtn btn' : 'btn'}
-        >Completed
-        </button>
+        <ButtonGroup
+          variant={'contained'}
+          size={'small'}
+          fullWidth={true}
+        >
+          <Button
+            color={props.filter === 'all' ? 'secondary' : 'primary'}
+            onClick={handlerCreator('all')}
+            style={{fontSize: '.7em', marginRight: '3px'}}
+          >All
+          </Button>
+          <Button
+            color={props.filter === 'active' ? 'secondary' : 'primary'}
+            onClick={handlerCreator('active')}
+            style={{fontSize: '.7em', marginRight: '3px'}}
+          >Active
+          </Button>
+          <Button
+            color={props.filter === 'completed' ? 'secondary' : 'primary'}
+            onClick={handlerCreator('completed')}
+            style={{fontSize: '.7em'}}
+          >Completed
+          </Button>
+        </ButtonGroup>
       </div>
     </div>
   );

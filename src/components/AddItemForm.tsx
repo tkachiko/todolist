@@ -1,4 +1,6 @@
 import React, {ChangeEvent, useState} from 'react';
+import {IconButton, TextField} from '@mui/material';
+import {AddCircle} from '@mui/icons-material';
 
 type AddItemFormPropsType = {
   addItem: (title: string) => void
@@ -7,8 +9,6 @@ type AddItemFormPropsType = {
 export const AddItemForm: React.FC<AddItemFormPropsType> = (props) => {
   const [title, setTitle] = useState<string>('');
   const [error, setError] = useState<boolean>(false);
-
-  const errorMessage = error ? <div className="errorMessage">Title is required!</div> : null;
 
   const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>): void => {
     setTitle(e.currentTarget.value);
@@ -31,14 +31,22 @@ export const AddItemForm: React.FC<AddItemFormPropsType> = (props) => {
 
   return (
     <div>
-      <input
+      <TextField
         onChange={onNewTitleChangeHandler}
         value={title}
         onKeyDown={onEnterDownAddItem}
         className={error ? 'error' : ''}
+        variant={'outlined'}
+        size={'small'}
+        label={'Title'}
+        error={error}
+        helperText={error && 'Title is required!'}
       />
-      <button onClick={addTask}>+</button>
-      {errorMessage}
+      <IconButton onClick={addTask}>
+        <AddCircle
+          color={'primary'}
+        />
+      </IconButton>
     </div>
   );
 };
