@@ -1,4 +1,4 @@
-import React from 'react';
+import {FC, useCallback} from 'react';
 import './App.css';
 import {AddItemForm} from './components/AddItemForm';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@mui/material';
@@ -13,23 +13,15 @@ export type TodolistType = {
   title: string
   filter: FilterType
 }
-export type TaskType = {
-  id: string
-  title: string
-  isDone: boolean
-}
-export type TaskStateType = {
-  [todolistId: string]: Array<TaskType>
-}
 export type FilterType = 'all' | 'active' | 'completed'
 
-export const AppWithRedux: React.FC = () => {
+export const AppWithRedux: FC = () => {
   const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todolists);
   const dispatch = useDispatch();
 
-  const addTodolist = (title: string): void => {
+  const addTodolist = useCallback((title: string): void => {
     dispatch(addTodolistAC(title));
-  };
+  }, [dispatch]);
 
   return (
     <div className="App">

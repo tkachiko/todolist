@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import {ChangeEvent, FC, KeyboardEvent, memo, useState} from 'react';
 import {IconButton, TextField} from '@mui/material';
 import {AddCircle} from '@mui/icons-material';
 
@@ -6,47 +6,47 @@ type AddItemFormPropsType = {
   addItem: (title: string) => void
 }
 
-export const AddItemForm: React.FC<AddItemFormPropsType> = (props) => {
+export const AddItemForm: FC<AddItemFormPropsType> = memo((props) => {
   const [title, setTitle] = useState<string>('');
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>): void => {
+  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>): void => {
     setTitle(e.currentTarget.value);
-    error && setError(false);
+    error && setError('Title is required');
   };
-  const addTask = (): void => {
-    const trimmedTitle = title.trim();
-    if (trimmedTitle !== '') {
-      props.addItem(trimmedTitle);
+  const addItem = (): void => {
+    if (title.trim() !== '') {
+      props.addItem(title.trim());
     } else {
-      setError(true);
+      setError('Title is required');
     }
     setTitle('');
   };
-  const onEnterDownAddItem = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+  const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>): void => {
+    if (error) setError(null);
     if (e.key === 'Enter') {
-      addTask();
+      addItem();
     }
   };
 
   return (
     <div>
       <TextField
-        onChange={onNewTitleChangeHandler}
+        onChange={onChangeHandler}
         value={title}
-        onKeyDown={onEnterDownAddItem}
+        onKeyDown={onKeyPressHandler}
         className={error ? 'error' : ''}
         variant={'outlined'}
         size={'small'}
         label={'Title'}
-        error={error}
+        error={!!error}
         helperText={error && 'Title is required!'}
       />
-      <IconButton onClick={addTask}>
+      <IconButton onClick={addItem}>
         <AddCircle
           color={'primary'}
         />
       </IconButton>
     </div>
   );
-};
+});

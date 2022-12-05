@@ -1,41 +1,56 @@
-import React from 'react';
-import {FilterType, TaskType, TodolistType} from '../App';
+import {FC, memo, useCallback, useMemo} from 'react';
+import {FilterType, TodolistType} from '../App';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
-import {Button, ButtonGroup, Checkbox, IconButton, List, ListItem, Typography} from '@mui/material';
+import {Button, ButtonGroup, IconButton, List, Typography} from '@mui/material';
 import {RemoveCircle} from '@mui/icons-material';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType} from '../state/store';
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from '../state/tasks-reducer';
+import {addTaskAC} from '../state/tasks-reducer';
 import {changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC} from '../state/todolists-reducer';
+import {Task} from './Task';
 
 type TodolistPropsType = {
   todolist: TodolistType
 }
 
-export const TodolistWithRedux: React.FC<TodolistPropsType> = ({todolist}) => {
+export type TaskType = {
+  id: string
+  title: string
+  isDone: boolean
+}
+
+export const TodolistWithRedux: FC<TodolistPropsType> = memo(({todolist}) => {
   const {id, title, filter} = todolist;
 
   let tasks = useSelector<AppRootStateType, Array<TaskType>>(state => state.tasks[id]);
   const dispatch = useDispatch();
 
-  const addTask = (title: string) => {
+  const addTask = useCallback((title: string) => {
     dispatch(addTaskAC(id, title));
-  };
-  const removeTodolist = () => {
+  }, [dispatch, id]);
+  const removeTodolist = useCallback(() => {
     dispatch(removeTodolistAC(id));
-  };
-  const changeTodolistTitle = (title: string) => dispatch(changeTodolistTitleAC(id, title));
-  const handlerCreator = (filter: FilterType) => () => {
+  }, [dispatch, id]);
+  const changeTodolistTitle = useCallback((title: string) => {
+    dispatch(changeTodolistTitleAC(id, title));
+  }, [dispatch, id]);
+  const handlerCreator = useCallback((filter: FilterType) => () => {
     dispatch(changeTodolistFilterAC(id, filter));
+  }, [dispatch, id]);
+
+  const getFilteredTasks = (task: Array<TaskType>, filter: FilterType): Array<TaskType> => {
+    let tasksForTodolist = task;
+    if (filter === 'active') {
+      tasksForTodolist = task.filter(t => !t.isDone);
+    }
+    if (filter === 'completed') {
+      tasksForTodolist = task.filter(t => t.isDone);
+    }
+    return tasksForTodolist;
   };
 
-  if (filter === 'active') {
-    tasks = tasks.filter(t => !t.isDone);
-  }
-  if (filter === 'completed') {
-    tasks = tasks.filter(t => t.isDone);
-  }
+  const filteredTasks = useMemo(() => getFilteredTasks(tasks, filter), [tasks, filter])
 
   return (
     <div>
@@ -55,36 +70,8 @@ export const TodolistWithRedux: React.FC<TodolistPropsType> = ({todolist}) => {
       </Typography>
       <AddItemForm addItem={addTask}/>
       {tasks.length
-        ? <List>{tasks.map(t => {
-
-          const removeTask = () => dispatch(removeTaskAC(t.id, id));
-          const changeTaskStatusHandler = () => dispatch(changeTaskStatusAC(t.id, t.isDone, id));
-          const changeTaskTitle = (title: string) => dispatch(changeTaskTitleAC(t.id, title, id));
-
-          return (
-            <ListItem
-              key={t.id}
-              className={t.isDone ? 'isDone' : 'notIsDone'}
-              style={{
-                padding: '0px',
-                justifyContent: 'space-between',
-                textDecoration: t.isDone ? 'line-through' : 'none'
-              }}
-            >
-              <Checkbox
-                checked={t.isDone}
-                onChange={changeTaskStatusHandler}
-                size={'small'}
-              />
-              <EditableSpan title={t.title} changeTitle={changeTaskTitle}/>
-              <IconButton onClick={removeTask}>
-                <RemoveCircle
-                  color={'secondary'}
-                  fontSize={'small'}
-                />
-              </IconButton>
-            </ListItem>
-          );
+        ? <List>{filteredTasks.map(t => {
+          return <Task key={t.id} task={t} todolistId={id}/>
         })}
         </List>
         : <div style={{margin: '10px 0'}}>Your task list is empty :(</div>}
@@ -116,4 +103,4 @@ export const TodolistWithRedux: React.FC<TodolistPropsType> = ({todolist}) => {
       </div>
     </div>
   );
-};
+});
