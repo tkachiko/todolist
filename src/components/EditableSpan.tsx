@@ -2,18 +2,18 @@ import React, {ChangeEvent, memo, useCallback, useState} from 'react';
 import {TextField} from '@mui/material';
 
 type EditableSpanPropsType = {
-  title: string
-  changeTitle: (newTitle: string) => void
+  value: string
+  onChange: (newTitle: string) => void
 }
 
 export const EditableSpan: React.FC<EditableSpanPropsType> = memo((props) => {
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
-  const [title, setTitle] = useState<string>(props.title);
+  const [title, setTitle] = useState<string>(props.value);
 
   const setEditModeOn = useCallback((): void => setIsEditMode(true), []);
   const setEditModeOff = useCallback((): void => {
     setIsEditMode(false);
-    props.changeTitle(title);
+    props.onChange(title);
   }, [props, title]);
   const onNewTitleChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>): void => {
     setTitle(e.currentTarget.value);
@@ -35,6 +35,6 @@ export const EditableSpan: React.FC<EditableSpanPropsType> = memo((props) => {
         size={'small'}
         variant={'standard'}
       />
-      : <span onDoubleClick={setEditModeOn}>{props.title}</span>
+      : <span onDoubleClick={setEditModeOn}>{props.value}</span>
   );
 });

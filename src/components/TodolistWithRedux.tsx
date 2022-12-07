@@ -59,7 +59,7 @@ export const TodolistWithRedux: FC<TodolistPropsType> = memo(({todolist}) => {
         align={'center'}
         style={{fontWeight: 'bold', marginBottom: '20px'}}
       >
-        <EditableSpan title={title} changeTitle={changeTodolistTitle}/>
+        <EditableSpan value={title} onChange={changeTodolistTitle}/>
         <IconButton
           size={'small'}
           onClick={removeTodolist}

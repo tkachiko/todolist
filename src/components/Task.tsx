@@ -39,7 +39,7 @@ export const Task: FC<TaskPropsType> = memo(({task, todolistId}) => {
         onChange={changeTaskStatus}
         size={'small'}
       />
-      <EditableSpan title={task.title} changeTitle={changeTaskTitle}/>
+      <EditableSpan value={task.title} onChange={changeTaskTitle}/>
       <IconButton onClick={removeTask}>
         <RemoveCircle
           color={'secondary'}

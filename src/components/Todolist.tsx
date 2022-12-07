@@ -41,7 +41,7 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
           onChange={changeTaskStatusHandler}
           size={'small'}
         />
-        <EditableSpan title={t.title} changeTitle={changeTaskTitle}/>
+        <EditableSpan value={t.title} onChange={changeTaskTitle}/>
         <IconButton onClick={removeTask}>
           <RemoveCircle
             color={'secondary'}
@@ -73,7 +73,7 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
         align={'center'}
         style={{fontWeight: 'bold', marginBottom: '20px'}}
       >
-        <EditableSpan title={props.title} changeTitle={changeTodolistTitle}/>
+        <EditableSpan value={props.title} onChange={changeTodolistTitle}/>
         <IconButton
           size={'small'}
           onClick={removeTodolist}
