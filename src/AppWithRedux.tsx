@@ -3,20 +3,13 @@ import './App.css';
 import {AddItemForm} from './components/AddItemForm';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@mui/material';
 import {Menu} from '@mui/icons-material';
-import {addTodolistAC} from './state/todolists-reducer';
+import {addTodolistAC, TodolistDomainType} from './state/todolists-reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType} from './state/store';
 import {TodolistWithRedux} from './components/TodolistWithRedux';
 
-export type TodolistType = {
-  id: string
-  title: string
-  filter: FilterType
-}
-export type FilterType = 'all' | 'active' | 'completed'
-
 export const AppWithRedux: FC = () => {
-  const todolists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todolists);
+  const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists);
   const dispatch = useDispatch();
 
   const addTodolist = useCallback((title: string): void => {
@@ -62,7 +55,7 @@ export const AppWithRedux: FC = () => {
                   elevation={16}
                   style={{maxWidth: '280px', width: '100%', margin: '20px', padding: '20px'}}
                 >
-                  <TodolistWithRedux todolist={tl}/>
+                  <TodolistWithRedux todolist={tl} filter={tl.filter}/>
                 </Paper>
               </Grid>
             );

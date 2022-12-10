@@ -1,9 +1,10 @@
 import React, {ChangeEvent} from 'react';
-import {FilterType, TaskType} from '../App';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
 import {Button, ButtonGroup, Checkbox, IconButton, List, ListItem, Typography} from '@mui/material';
 import {RemoveCircle} from '@mui/icons-material';
+import {FilterType} from '../state/todolists-reducer';
+import {TaskStatuses, TaskType} from '../api/todolist-api';
 
 type TodolistPropsType = {
   todolistId: string
@@ -12,7 +13,7 @@ type TodolistPropsType = {
   filter: FilterType
   removeTask: (taskId: string, todolistId: string) => void
   addTask: (todolistId: string, newTaskTitle: string) => void
-  changeTaskStatus: (taskId: string, isDone: boolean, todolistId: string) => void
+  changeTaskStatus: (taskId: string, status: TaskStatuses, todolistId: string) => void
   changeTodolistFilter: (filter: FilterType, todolistId: string) => void
   removeTodolist: (todolistId: string) => void
   changeTaskTitle: (taskId: string, title: string, todolistId: string) => void
@@ -23,21 +24,23 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
 
   const getTasksListItem = (t: TaskType) => {
     const removeTask = () => props.removeTask(t.id, props.todolistId);
-    const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => props.changeTaskStatus(t.id, e.currentTarget.checked, props.todolistId);
+    const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => props.changeTaskStatus(t.id, (e.currentTarget.checked ? TaskStatuses.New : TaskStatuses.Completed), props.todolistId);
     const changeTaskTitle = (title: string) => props.changeTaskTitle(t.id, title, props.todolistId);
+
+    const isDone = t.status === TaskStatuses.Completed;
 
     return (
       <ListItem
         key={t.id}
-        className={t.isDone ? 'isDone' : 'notIsDone'}
+        className={isDone ? 'isDone' : 'notIsDone'}
         style={{
           padding: '0px',
           justifyContent: 'space-between',
-          textDecoration: t.isDone ? 'line-through' : 'none'
+          textDecoration: isDone ? 'line-through' : 'none'
         }}
       >
         <Checkbox
-          checked={t.isDone}
+          checked={isDone}
           onChange={changeTaskStatusHandler}
           size={'small'}
         />

@@ -1,5 +1,4 @@
 import {FC, memo, useCallback, useMemo} from 'react';
-import {FilterType, TodolistType} from '../App';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
 import {Button, ButtonGroup, IconButton, List, Typography} from '@mui/material';
@@ -7,21 +6,17 @@ import {RemoveCircle} from '@mui/icons-material';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType} from '../state/store';
 import {addTaskAC} from '../state/tasks-reducer';
-import {changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC} from '../state/todolists-reducer';
+import {changeTodolistFilterAC, changeTodolistTitleAC, FilterType, removeTodolistAC,} from '../state/todolists-reducer';
 import {Task} from './Task';
+import {TaskStatuses, TaskType, TodolistType} from '../api/todolist-api';
 
 type TodolistPropsType = {
   todolist: TodolistType
+  filter: FilterType
 }
 
-export type TaskType = {
-  id: string
-  title: string
-  isDone: boolean
-}
-
-export const TodolistWithRedux: FC<TodolistPropsType> = memo(({todolist}) => {
-  const {id, title, filter} = todolist;
+export const TodolistWithRedux: FC<TodolistPropsType> = memo(({todolist, filter}) => {
+  const {id, title} = todolist;
 
   let tasks = useSelector<AppRootStateType, Array<TaskType>>(state => state.tasks[id]);
   const dispatch = useDispatch();
@@ -42,15 +37,15 @@ export const TodolistWithRedux: FC<TodolistPropsType> = memo(({todolist}) => {
   const getFilteredTasks = (task: Array<TaskType>, filter: FilterType): Array<TaskType> => {
     let tasksForTodolist = task;
     if (filter === 'active') {
-      tasksForTodolist = task.filter(t => !t.isDone);
+      tasksForTodolist = task.filter(t => t.status === TaskStatuses.New);
     }
     if (filter === 'completed') {
-      tasksForTodolist = task.filter(t => t.isDone);
+      tasksForTodolist = task.filter(t => t.status === TaskStatuses.Completed);
     }
     return tasksForTodolist;
   };
 
-  const filteredTasks = useMemo(() => getFilteredTasks(tasks, filter), [tasks, filter])
+  const filteredTasks = useMemo(() => getFilteredTasks(tasks, filter), [tasks, filter]);
 
   return (
     <div>
@@ -71,7 +66,7 @@ export const TodolistWithRedux: FC<TodolistPropsType> = memo(({todolist}) => {
       <AddItemForm addItem={addTask}/>
       {tasks.length
         ? <List>{filteredTasks.map(t => {
-          return <Task key={t.id} task={t} todolistId={id}/>
+          return <Task key={t.id} task={t} todolistId={id}/>;
         })}
         </List>
         : <div style={{margin: '10px 0'}}>Your task list is empty :(</div>}

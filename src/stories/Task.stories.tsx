@@ -1,13 +1,9 @@
-import React, {ChangeEvent, useState} from 'react';
+import React from 'react';
 import {ComponentMeta, ComponentStory} from '@storybook/react';
 import {Task} from '../components/Task';
 import {action} from '@storybook/addon-actions';
-import {useDispatch} from 'react-redux';
-import {Checkbox, IconButton} from '@mui/material';
-import {EditableSpan} from '../components/EditableSpan';
-import {Delete} from '@mui/icons-material';
-import {removeTaskAC} from '../state/tasks-reducer';
 import {ReduxStoreProviderDecorator} from '../state/ReduxStoreProviderDecorator';
+import {TaskPriorities, TaskStatuses} from '../api/todolist-api';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -18,7 +14,7 @@ export default {
     changeTaskStatus: action('changeTaskStatus'),
     changeTaskTitle: action('changeTaskTitle'),
     removeTask: action('changeTaskStatus'),
-    task: {id: 'taskId', title: 'taskTitle', isDone: true},
+    task: {id: 'taskId', title: 'taskTitle', status: TaskStatuses.New, todoListId: 'todolistId_1', addedDate: '', startDate: '', deadline: '', order: 0, priority: TaskPriorities.Low, description: ''},
     todolistId: 'todolistId',
   },
   decorators: [ReduxStoreProviderDecorator],
@@ -33,7 +29,7 @@ export const TaskIsDoneStory = Template.bind({});
 export const TaskIsNotDoneStory = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 TaskIsNotDoneStory.args = {
-  task: {id: 'taskId', title: 'taskTitle', isDone: false},
+  task: {id: 'taskId', title: 'taskTitle', status: TaskStatuses.New, todoListId: 'todolistId_1', addedDate: '', startDate: '', deadline: '', order: 0, priority: TaskPriorities.Low, description: ''},
 };
 
 // const TemplateWork: ComponentStory<typeof Task> = (args) => {

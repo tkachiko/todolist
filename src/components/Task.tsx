@@ -1,10 +1,10 @@
 import {Checkbox, IconButton, ListItem} from '@mui/material';
 import {EditableSpan} from './EditableSpan';
 import {RemoveCircle} from '@mui/icons-material';
-import {FC, memo} from 'react';
+import {ChangeEvent, FC, memo} from 'react';
 import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from '../state/tasks-reducer';
 import {useDispatch} from 'react-redux';
-import {TaskType} from './TodolistWithRedux';
+import {TaskStatuses, TaskType} from '../api/todolist-api';
 
 type TaskPropsType = {
   task: TaskType
@@ -17,25 +17,27 @@ export const Task: FC<TaskPropsType> = memo(({task, todolistId}) => {
   const removeTask = () => {
     dispatch(removeTaskAC(task.id, todolistId));
   };
-  const changeTaskStatus = () => {
-    dispatch(changeTaskStatusAC(task.id, task.isDone, todolistId));
+  const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
+    dispatch(changeTaskStatusAC(task.id, (e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New), todolistId));
   };
   const changeTaskTitle = (title: string) => {
     dispatch(changeTaskTitleAC(task.id, title, todolistId));
   };
 
+  const isDone = task.status === TaskStatuses.Completed;
+
   return (
     <ListItem
       key={task.id}
-      className={task.isDone ? 'isDone' : 'notIsDone'}
+      className={isDone ? 'isDone' : 'notIsDone'}
       style={{
         padding: '0px',
         justifyContent: 'space-between',
-        textDecoration: task.isDone ? 'line-through' : 'none'
+        textDecoration: isDone ? 'line-through' : 'none'
       }}
     >
       <Checkbox
-        checked={task.isDone}
+        checked={isDone}
         onChange={changeTaskStatus}
         size={'small'}
       />
