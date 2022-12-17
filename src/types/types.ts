@@ -6,6 +6,8 @@ import {
   setTodolistsAC
 } from '../features/TodolistsList/todolists-reducer';
 import {addTaskAC, removeTaskAC, setTasksAC, updateTaskAC} from '../features/TodolistsList/tasks-reducer';
+import {AppRootStateType} from '../app/store';
+import {ThunkAction} from 'redux-thunk';
 
 // api types
 export type TodolistType = {
@@ -80,10 +82,12 @@ export type UpdateDomainTaskModelType = {
   deadline?: string
 }
 
+//-----------------
 // actions types
+//-----------------
 
-// tasks reducer actions type
-export type TasksReducerActionsType =
+// tasks actions type
+export type TasksActionsType =
   | ReturnType<typeof removeTaskAC>
   | ReturnType<typeof addTaskAC>
   | ReturnType<typeof updateTaskAC>
@@ -92,8 +96,8 @@ export type TasksReducerActionsType =
   | RemoveTodolistActionType
   | SetTodolistsActionType
 
-// TodolistsList reducer actions type
-export type TodolistsReducerActionsTypes =
+// todolists actions type
+export type TodolistsActionsType =
   | ReturnType<typeof addTodolistAC>
   | ReturnType<typeof changeTodolistFilterAC>
   | ReturnType<typeof changeTodolistTitleAC>
@@ -103,3 +107,8 @@ export type TodolistsReducerActionsTypes =
 type AddTodolistActionType = ReturnType<typeof addTodolistAC>
 type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>
 type SetTodolistsActionType = ReturnType<typeof setTodolistsAC>
+
+// all actions types for app
+export type AppActionsType = TodolistsActionsType | TasksActionsType
+
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, AppActionsType>

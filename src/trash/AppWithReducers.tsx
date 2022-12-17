@@ -15,22 +15,22 @@ import {
 import {addTaskAC, removeTaskAC, tasksReducer, updateTaskAC} from '../features/TodolistsList/tasks-reducer';
 import {
   FilterType,
-  TaskPriorities, TasksReducerActionsType,
+  TaskPriorities, TasksActionsType,
   TaskStateType,
   TaskStatuses,
   TaskType,
-  TodolistDomainType, TodolistsReducerActionsTypes
+  TodolistDomainType, TodolistsActionsType
 } from '../types/types';
 
 export const AppWithReducers: React.FC = () => {
   const todolistId_1 = v1();
   const todolistId_2 = v1();
-  const [todolists, dispatchToTodolists] = useReducer<Reducer<TodolistDomainType[], TodolistsReducerActionsTypes>>(todolistsReducer, [
+  const [todolists, dispatchToTodolists] = useReducer<Reducer<TodolistDomainType[], TodolistsActionsType>>(todolistsReducer, [
     {id: todolistId_1, title: 'What to learn', filter: 'all', addedDate: '', order: 0},
     {id: todolistId_2, title: 'What to buy', filter: 'all', addedDate: '', order: 0},
   ]);
 
-  const [tasks, dispatchToTasks] = useReducer<Reducer<TaskStateType, TasksReducerActionsType>>(tasksReducer, {
+  const [tasks, dispatchToTasks] = useReducer<Reducer<TaskStateType, TasksActionsType>>(tasksReducer, {
     [todolistId_1]: [
       {
         id: v1(),

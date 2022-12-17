@@ -1,10 +1,9 @@
-import {FilterType, TodolistDomainType, TodolistsReducerActionsTypes, TodolistType} from '../../types/types';
+import {AppThunk, FilterType, TodolistDomainType, TodolistsActionsType, TodolistType} from '../../types/types';
 import {todolistAPI} from '../../api/todolist-api';
-import {Dispatch} from 'redux';
 
 const initialState: TodolistDomainType[] = [];
 
-export const todolistsReducer = (state: TodolistDomainType[] = initialState, action: TodolistsReducerActionsTypes): TodolistDomainType[] => {
+export const todolistsReducer = (state: TodolistDomainType[] = initialState, action: TodolistsActionsType): TodolistDomainType[] => {
   switch (action.type) {
     case 'REMOVE_TODOLIST':
       return state.filter(tl => tl.id !== action.id);
@@ -34,25 +33,25 @@ export const setTodolistsAC = (todolists: TodolistType[]) =>
   ({type: 'SET_TODOS', todolists} as const);
 
 // thunks
-export const getTodolistsTC = () => (dispatch: Dispatch<TodolistsReducerActionsTypes>) => {
+export const getTodolistsTC = (): AppThunk => (dispatch) => {
   todolistAPI.getTodolist()
     .then(res => {
       dispatch(setTodolistsAC(res.data));
     });
 };
-export const removeTodolistTC = (id: string) => (dispatch: Dispatch<TodolistsReducerActionsTypes>) => {
+export const removeTodolistTC = (id: string): AppThunk => (dispatch) => {
   todolistAPI.deleteTodolist(id)
     .then(() => {
       dispatch(removeTodolistAC(id));
     });
 };
-export const addTodolistTC = (title: string) => (dispatch: Dispatch<TodolistsReducerActionsTypes>) => {
+export const addTodolistTC = (title: string): AppThunk => (dispatch) => {
   todolistAPI.createTodolist(title)
     .then(res => {
       dispatch(addTodolistAC(res.data.data.item));
     });
 };
-export const changeTodolistTitleTC = (id: string, title: string) => (dispatch: Dispatch<TodolistsReducerActionsTypes>) => {
+export const changeTodolistTitleTC = (id: string, title: string): AppThunk => (dispatch) => {
   todolistAPI.updateTodolist(id, title)
     .then(() => {
       dispatch(changeTodolistTitleAC(id, title));

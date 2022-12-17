@@ -1,17 +1,17 @@
 import {
-  TasksReducerActionsType,
+  AppThunk,
+  TasksActionsType,
   TaskStateType,
   TaskType,
   UpdateDomainTaskModelType,
   UpdateTaskModelType
 } from '../../types/types';
 import {todolistAPI} from '../../api/todolist-api';
-import {Dispatch} from 'redux';
 import {AppRootStateType} from '../../app/store';
 
 const initialState: TaskStateType = {};
 
-export const tasksReducer = (state = initialState, action: TasksReducerActionsType) => {
+export const tasksReducer = (state = initialState, action: TasksActionsType) => {
   const stateCopy = {...state};
 
   switch (action.type) {
@@ -57,25 +57,25 @@ export const setTasksAC = (tasks: TaskType[], todolistId: string) =>
   ({type: 'SET_TASKS', tasks, todolistId} as const);
 
 // thunks
-export const getTasksTC = (todolistId: string) => (dispatch: Dispatch<TasksReducerActionsType>) => {
+export const getTasksTC = (todolistId: string): AppThunk => (dispatch) => {
   todolistAPI.getTasks(todolistId)
     .then(res => {
       dispatch(setTasksAC(res.data.items, todolistId));
     });
 };
-export const removeTaskTC = (taskId: string, todolistId: string) => (dispatch: Dispatch<TasksReducerActionsType>) => {
+export const removeTaskTC = (taskId: string, todolistId: string): AppThunk => (dispatch) => {
   todolistAPI.deleteTask(todolistId, taskId)
     .then(res => {
       dispatch(removeTaskAC(taskId, todolistId));
     });
 };
-export const createTaskTC = (todolistId: string, title: string) => (dispatch: Dispatch<TasksReducerActionsType>) => {
+export const createTaskTC = (todolistId: string, title: string): AppThunk => (dispatch) => {
   todolistAPI.createTask(todolistId, title)
     .then(res => {
       dispatch(addTaskAC(res.data.data.item));
     });
 };
-export const updateTaskTC = (todolistId: string, taskId: string, domainModel: UpdateDomainTaskModelType) => (dispatch: Dispatch<TasksReducerActionsType>, getState: () => AppRootStateType) => {
+export const updateTaskTC = (todolistId: string, taskId: string, domainModel: UpdateDomainTaskModelType): AppThunk => (dispatch, getState: () => AppRootStateType) => {
   const task = getState().tasks[todolistId].find(t => t.id === taskId);
 
   if (!task) console.warn('Task not found in the state');
