@@ -7,7 +7,7 @@ import {
 } from '../features/TodolistsList/todolists-reducer';
 import {addTaskAC, removeTaskAC, setTasksAC, updateTaskAC} from '../features/TodolistsList/tasks-reducer';
 import {AppRootStateType} from '../app/store';
-import {ThunkAction} from 'redux-thunk';
+import {ThunkAction, ThunkDispatch} from 'redux-thunk'
 
 // api types
 export type TodolistType = {
@@ -111,4 +111,5 @@ type SetTodolistsActionType = ReturnType<typeof setTodolistsAC>
 // all actions types for app
 export type AppActionsType = TodolistsActionsType | TasksActionsType
 
-export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, AppActionsType>
+export type ThunkAppDispatchType<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, AppActionsType>
+export type AppThunk = ThunkDispatch<AppRootStateType, unknown, AppActionsType>

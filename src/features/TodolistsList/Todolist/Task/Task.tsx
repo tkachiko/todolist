@@ -3,8 +3,8 @@ import {EditableSpan} from '../../../../components/EditableSpan/EditableSpan';
 import {RemoveCircle} from '@mui/icons-material';
 import {ChangeEvent, FC, memo} from 'react';
 import {removeTaskTC, updateTaskTC} from '../../tasks-reducer';
-import {useAppDispatch} from '../../../../app/store';
 import {TaskStatuses, TaskType} from '../../../../types/types';
+import {useAppDispatch} from '../../../../app/hooks'
 
 type TaskPropsType = {
   task: TaskType

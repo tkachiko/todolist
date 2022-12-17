@@ -1,12 +1,13 @@
 import {FC, useCallback, useEffect} from 'react';
-import {useAppDispatch, useAppSelector} from '../../app/store';
 import {TodolistDomainType} from '../../types/types';
 import {addTodolistTC, getTodolistsTC} from './todolists-reducer';
 import {Grid, Paper} from '@mui/material';
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm';
 import {Todolist} from './Todolist/Todolist';
+import {useAppDispatch, useAppSelector} from '../../app/hooks'
 
-export const TodolistsList: FC = () => {
+type TodolistsListPropsType = {}
+export const TodolistsList: FC<TodolistsListPropsType> = (props) => {
   const todolists = useAppSelector<Array<TodolistDomainType>>(state => state.todolists);
   const dispatch = useAppDispatch();
 

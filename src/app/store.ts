@@ -1,8 +1,7 @@
-import {tasksReducer} from '../features/TodolistsList/tasks-reducer';
-import {todolistsReducer} from '../features/TodolistsList/todolists-reducer';
-import {AnyAction, applyMiddleware, combineReducers, legacy_createStore} from 'redux';
-import thunkMiddleware, {ThunkDispatch} from 'redux-thunk';
-import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
+import {tasksReducer} from '../features/TodolistsList/tasks-reducer'
+import {todolistsReducer} from '../features/TodolistsList/todolists-reducer'
+import {applyMiddleware, combineReducers, legacy_createStore as createStore} from 'redux'
+import thunkMiddleware from 'redux-thunk'
 
 // объединяя reducer-ы с помощью combineReducers,
 // мы задаём структуру нашего единственного объекта-состояния
@@ -11,14 +10,10 @@ const rootReducer = combineReducers({
   todolists: todolistsReducer
 });
 // непосредственно создаём state
-export const store = legacy_createStore(rootReducer, applyMiddleware(thunkMiddleware));
+export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 // определить автоматически тип всего объекта состояния
 
 export type AppRootStateType = ReturnType<typeof rootReducer>
-export type ThunkAppDispatchType = ThunkDispatch<AppRootStateType, any, AnyAction>
-
-export const useAppDispatch = () => useDispatch<ThunkAppDispatchType>();
-export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector
 // а это, чтобы можно было в консоли браузера обращаться к state в любой момент
 // @ts-ignore
 window.store = store;

@@ -1,5 +1,5 @@
 import {
-  AppThunk,
+  ThunkAppDispatchType,
   TasksActionsType,
   TaskStateType,
   TaskType,
@@ -57,25 +57,25 @@ export const setTasksAC = (tasks: TaskType[], todolistId: string) =>
   ({type: 'SET_TASKS', tasks, todolistId} as const);
 
 // thunks
-export const getTasksTC = (todolistId: string): AppThunk => (dispatch) => {
+export const getTasksTC = (todolistId: string): ThunkAppDispatchType => (dispatch) => {
   todolistAPI.getTasks(todolistId)
     .then(res => {
       dispatch(setTasksAC(res.data.items, todolistId));
     });
 };
-export const removeTaskTC = (taskId: string, todolistId: string): AppThunk => (dispatch) => {
+export const removeTaskTC = (taskId: string, todolistId: string): ThunkAppDispatchType => (dispatch) => {
   todolistAPI.deleteTask(todolistId, taskId)
     .then(res => {
       dispatch(removeTaskAC(taskId, todolistId));
     });
 };
-export const createTaskTC = (todolistId: string, title: string): AppThunk => (dispatch) => {
+export const createTaskTC = (todolistId: string, title: string): ThunkAppDispatchType => (dispatch) => {
   todolistAPI.createTask(todolistId, title)
     .then(res => {
       dispatch(addTaskAC(res.data.data.item));
     });
 };
-export const updateTaskTC = (todolistId: string, taskId: string, domainModel: UpdateDomainTaskModelType): AppThunk => (dispatch, getState: () => AppRootStateType) => {
+export const updateTaskTC = (todolistId: string, taskId: string, domainModel: UpdateDomainTaskModelType): ThunkAppDispatchType => (dispatch, getState: () => AppRootStateType) => {
   const task = getState().tasks[todolistId].find(t => t.id === taskId);
 
   if (!task) console.warn('Task not found in the state');

@@ -3,11 +3,11 @@ import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
 import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
 import {Button, ButtonGroup, IconButton, List, Typography} from '@mui/material';
 import {RemoveCircle} from '@mui/icons-material';
-import {useAppDispatch, useAppSelector} from '../../../app/store';
 import {createTaskTC, getTasksTC} from '../tasks-reducer';
 import {changeTodolistFilterAC, changeTodolistTitleTC, removeTodolistTC,} from '../todolists-reducer';
 import {Task} from './Task/Task';
 import {FilterType, TaskStatuses, TaskType, TodolistType} from '../../../types/types';
+import {useAppDispatch, useAppSelector} from '../../../app/hooks'
 
 type TodolistPropsType = {
   todolist: TodolistType
