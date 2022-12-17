@@ -1,16 +1,11 @@
 import React, {useState} from 'react';
-import './App.css';
-import {Todolist} from './components/Todolist';
+import '../app/App.css';
+import {Todolist} from './Todolist';
 import {v1} from 'uuid';
-import {AddItemForm} from './components/AddItemForm';
+import {AddItemForm} from '../components/AddItemForm/AddItemForm';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@mui/material';
 import {Menu} from '@mui/icons-material';
-import {TaskPriorities, TaskStatuses, TaskType} from './api/todolist-api';
-import {FilterType, TodolistDomainType} from './state/todolists-reducer';
-
-export type TaskStateType = {
-  [todolistId: string]: TaskType[]
-}
+import {FilterType, TaskPriorities, TaskStateType, TaskStatuses, TaskType, TodolistDomainType} from '../types/types';
 
 const App: React.FC = () => {
   const todolistId_1 = v1();
@@ -193,7 +188,7 @@ const App: React.FC = () => {
     });
   };
 
-  //todolists
+  //TodolistsList
   const addTodolist = (title: string): void => {
     const newTodolistId: string = v1();
     const newTodolist: TodolistDomainType = {

@@ -1,12 +1,11 @@
 import React, {ChangeEvent, useEffect} from 'react';
-import {AddItemForm} from './AddItemForm';
-import {EditableSpan} from './EditableSpan';
+import {AddItemForm} from '../components/AddItemForm/AddItemForm';
+import {EditableSpan} from '../components/EditableSpan/EditableSpan';
 import {Button, ButtonGroup, Checkbox, IconButton, List, ListItem, Typography} from '@mui/material';
 import {RemoveCircle} from '@mui/icons-material';
-import {FilterType} from '../state/todolists-reducer';
-import {TaskStatuses, TaskType} from '../api/todolist-api';
-import {useAppDispatch} from '../state/store';
-import {getTasksTC} from '../state/tasks-reducer';
+import {useAppDispatch} from '../app/store';
+import {getTasksTC} from '../features/TodolistsList/tasks-reducer';
+import {FilterType, TaskStatuses, TaskType} from '../types/types';
 
 type TodolistPropsType = {
   todolistId: string

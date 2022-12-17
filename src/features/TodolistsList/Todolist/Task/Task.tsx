@@ -1,10 +1,10 @@
 import {Checkbox, IconButton, ListItem} from '@mui/material';
-import {EditableSpan} from './EditableSpan';
+import {EditableSpan} from '../../../../components/EditableSpan/EditableSpan';
 import {RemoveCircle} from '@mui/icons-material';
 import {ChangeEvent, FC, memo} from 'react';
-import {removeTaskTC, updateTaskTC} from '../state/tasks-reducer';
-import {TaskStatuses, TaskType} from '../api/todolist-api';
-import {useAppDispatch} from '../state/store';
+import {removeTaskTC, updateTaskTC} from '../../tasks-reducer';
+import {useAppDispatch} from '../../../../app/store';
+import {TaskStatuses, TaskType} from '../../../../types/types';
 
 type TaskPropsType = {
   task: TaskType

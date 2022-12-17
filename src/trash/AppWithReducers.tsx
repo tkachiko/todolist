@@ -1,36 +1,36 @@
 import React, {Reducer, useReducer} from 'react';
-import './App.css';
-import {Todolist} from './components/Todolist';
+import '../app/App.css';
+import {Todolist} from './Todolist';
 import {v1} from 'uuid';
-import {AddItemForm} from './components/AddItemForm';
+import {AddItemForm} from '../components/AddItemForm/AddItemForm';
 import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@mui/material';
 import {Menu} from '@mui/icons-material';
 import {
   addTodolistAC,
   changeTodolistFilterAC,
   changeTodolistTitleAC,
-  FilterType,
   removeTodolistAC,
-  TodolistDomainType,
   todolistsReducer
-} from './state/todolists-reducer';
-import {addTaskAC, removeTaskAC, tasksReducer, updateTaskAC} from './state/tasks-reducer';
-import {ActionsType} from './types/types';
-import {TaskPriorities, TaskStatuses, TaskType} from './api/todolist-api';
+} from '../features/TodolistsList/todolists-reducer';
+import {addTaskAC, removeTaskAC, tasksReducer, updateTaskAC} from '../features/TodolistsList/tasks-reducer';
+import {
+  FilterType,
+  TaskPriorities, TasksReducerActionsType,
+  TaskStateType,
+  TaskStatuses,
+  TaskType,
+  TodolistDomainType, TodolistsReducerActionsTypes
+} from '../types/types';
 
-export type TaskStateType = {
-  [todolistId: string]: Array<TaskType>
-}
-
-export const AppWithReducer: React.FC = () => {
+export const AppWithReducers: React.FC = () => {
   const todolistId_1 = v1();
   const todolistId_2 = v1();
-  const [todolists, dispatchToTodolists] = useReducer<Reducer<TodolistDomainType[], ActionsType>>(todolistsReducer, [
+  const [todolists, dispatchToTodolists] = useReducer<Reducer<TodolistDomainType[], TodolistsReducerActionsTypes>>(todolistsReducer, [
     {id: todolistId_1, title: 'What to learn', filter: 'all', addedDate: '', order: 0},
     {id: todolistId_2, title: 'What to buy', filter: 'all', addedDate: '', order: 0},
   ]);
 
-  const [tasks, dispatchToTasks] = useReducer<Reducer<TaskStateType, ActionsType>>(tasksReducer, {
+  const [tasks, dispatchToTasks] = useReducer<Reducer<TaskStateType, TasksReducerActionsType>>(tasksReducer, {
     [todolistId_1]: [
       {
         id: v1(),
@@ -186,7 +186,7 @@ export const AppWithReducer: React.FC = () => {
     dispatchToTasks(action);
   };
 
-  //todolists
+  //TodolistsList
   const addTodolist = (title: string): void => {
     const action = addTodolistAC({id: 'todolistId_1', title: title, order: 0, addedDate: ''});
     dispatchToTodolists(action);

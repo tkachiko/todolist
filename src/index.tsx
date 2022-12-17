@@ -4,8 +4,8 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import {createTheme, CssBaseline, ThemeProvider} from '@mui/material';
 import {Provider} from 'react-redux';
-import {store} from './state/store';
-import {AppWithRedux} from './AppWithRedux';
+import {store} from './app/store';
+import {App} from './app/App';
 
 let theme = createTheme({
   palette: {
@@ -30,7 +30,7 @@ root.render(
   <ThemeProvider theme={theme}>
     <CssBaseline/>
     <Provider store={store}>
-    <AppWithRedux/>
+    <App/>
     </Provider>
   </ThemeProvider>
 );

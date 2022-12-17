@@ -1,20 +1,20 @@
 import {FC, memo, useCallback, useEffect, useMemo} from 'react';
-import {AddItemForm} from './AddItemForm';
-import {EditableSpan} from './EditableSpan';
+import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
+import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
 import {Button, ButtonGroup, IconButton, List, Typography} from '@mui/material';
 import {RemoveCircle} from '@mui/icons-material';
-import {useAppDispatch, useAppSelector} from '../state/store';
-import {createTaskTC, getTasksTC} from '../state/tasks-reducer';
-import {changeTodolistFilterAC, changeTodolistTitleTC, FilterType, removeTodolistTC,} from '../state/todolists-reducer';
-import {Task} from './Task';
-import {TaskStatuses, TaskType, TodolistType} from '../api/todolist-api';
+import {useAppDispatch, useAppSelector} from '../../../app/store';
+import {createTaskTC, getTasksTC} from '../tasks-reducer';
+import {changeTodolistFilterAC, changeTodolistTitleTC, removeTodolistTC,} from '../todolists-reducer';
+import {Task} from './Task/Task';
+import {FilterType, TaskStatuses, TaskType, TodolistType} from '../../../types/types';
 
 type TodolistPropsType = {
   todolist: TodolistType
   filter: FilterType
 }
 
-export const TodolistWithRedux: FC<TodolistPropsType> = memo(({todolist, filter}) => {
+export const Todolist: FC<TodolistPropsType> = memo(({todolist, filter}) => {
   const {id, title} = todolist;
 
   let tasks = useAppSelector<Array<TaskType>>(state => state.tasks[id]);
