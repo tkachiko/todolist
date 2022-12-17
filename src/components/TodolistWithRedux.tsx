@@ -1,12 +1,11 @@
-import {FC, memo, useCallback, useMemo} from 'react';
+import {FC, memo, useCallback, useEffect, useMemo} from 'react';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
 import {Button, ButtonGroup, IconButton, List, Typography} from '@mui/material';
 import {RemoveCircle} from '@mui/icons-material';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppRootStateType} from '../state/store';
-import {addTaskAC} from '../state/tasks-reducer';
-import {changeTodolistFilterAC, changeTodolistTitleAC, FilterType, removeTodolistAC,} from '../state/todolists-reducer';
+import {useAppDispatch, useAppSelector} from '../state/store';
+import {createTaskTC, getTasksTC} from '../state/tasks-reducer';
+import {changeTodolistFilterAC, changeTodolistTitleTC, FilterType, removeTodolistTC,} from '../state/todolists-reducer';
 import {Task} from './Task';
 import {TaskStatuses, TaskType, TodolistType} from '../api/todolist-api';
 
@@ -18,17 +17,21 @@ type TodolistPropsType = {
 export const TodolistWithRedux: FC<TodolistPropsType> = memo(({todolist, filter}) => {
   const {id, title} = todolist;
 
-  let tasks = useSelector<AppRootStateType, Array<TaskType>>(state => state.tasks[id]);
-  const dispatch = useDispatch();
+  let tasks = useAppSelector<Array<TaskType>>(state => state.tasks[id]);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getTasksTC(id));
+  }, [dispatch, id]);
 
   const addTask = useCallback((title: string) => {
-    dispatch(addTaskAC(id, title));
+    dispatch(createTaskTC(id, title));
   }, [dispatch, id]);
   const removeTodolist = useCallback(() => {
-    dispatch(removeTodolistAC(id));
+    dispatch(removeTodolistTC(id));
   }, [dispatch, id]);
   const changeTodolistTitle = useCallback((title: string) => {
-    dispatch(changeTodolistTitleAC(id, title));
+    dispatch(changeTodolistTitleTC(id, title));
   }, [dispatch, id]);
   const handlerCreator = useCallback((filter: FilterType) => () => {
     dispatch(changeTodolistFilterAC(id, filter));

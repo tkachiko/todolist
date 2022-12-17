@@ -1,10 +1,12 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, useEffect} from 'react';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
 import {Button, ButtonGroup, Checkbox, IconButton, List, ListItem, Typography} from '@mui/material';
 import {RemoveCircle} from '@mui/icons-material';
 import {FilterType} from '../state/todolists-reducer';
 import {TaskStatuses, TaskType} from '../api/todolist-api';
+import {useAppDispatch} from '../state/store';
+import {getTasksTC} from '../state/tasks-reducer';
 
 type TodolistPropsType = {
   todolistId: string
@@ -13,7 +15,7 @@ type TodolistPropsType = {
   filter: FilterType
   removeTask: (taskId: string, todolistId: string) => void
   addTask: (todolistId: string, newTaskTitle: string) => void
-  changeTaskStatus: (taskId: string, status: TaskStatuses, todolistId: string) => void
+  changeTaskStatus: (taskId: string, todolistId: string, status: TaskStatuses) => void
   changeTodolistFilter: (filter: FilterType, todolistId: string) => void
   removeTodolist: (todolistId: string) => void
   changeTaskTitle: (taskId: string, title: string, todolistId: string) => void
@@ -22,9 +24,15 @@ type TodolistPropsType = {
 
 export const Todolist: React.FC<TodolistPropsType> = (props) => {
 
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getTasksTC(props.todolistId));
+  }, []);
+
   const getTasksListItem = (t: TaskType) => {
     const removeTask = () => props.removeTask(t.id, props.todolistId);
-    const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => props.changeTaskStatus(t.id, (e.currentTarget.checked ? TaskStatuses.New : TaskStatuses.Completed), props.todolistId);
+    const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => props.changeTaskStatus(t.id, props.todolistId, (e.currentTarget.checked ? TaskStatuses.New : TaskStatuses.Completed));
     const changeTaskTitle = (title: string) => props.changeTaskTitle(t.id, title, props.todolistId);
 
     const isDone = t.status === TaskStatuses.Completed;

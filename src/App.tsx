@@ -180,7 +180,7 @@ const App: React.FC = () => {
       [todolistId]: [newTask, ...tasks[todolistId]]
     });
   };
-  const changeTaskStatus = (taskId: string, status: TaskStatuses, todolistId: string) => {
+  const changeTaskStatus = (taskId: string, todolistId: string, status: TaskStatuses) => {
     setTasks({
       ...tasks,
       [todolistId]: tasks[todolistId].map(task => task.id === taskId ? {...task, status} : task)

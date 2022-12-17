@@ -14,7 +14,7 @@ import {
   TodolistDomainType,
   todolistsReducer
 } from './state/todolists-reducer';
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from './state/tasks-reducer';
+import {addTaskAC, removeTaskAC, tasksReducer, updateTaskAC} from './state/tasks-reducer';
 import {ActionsType} from './types/types';
 import {TaskPriorities, TaskStatuses, TaskType} from './api/todolist-api';
 
@@ -162,22 +162,33 @@ export const AppWithReducer: React.FC = () => {
     const action = removeTaskAC(taskId, todolistId);
     dispatchToTasks(action);
   };
-  const addTask = (todolistId: string, newTaskTitle: string): void => {
-    const action = addTaskAC(todolistId, newTaskTitle);
+  const addTask = (todolistId: string, title: string): void => {
+    const action = addTaskAC({
+      id: '1',
+      title: title,
+      status: TaskStatuses.New,
+      todoListId: todolistId,
+      addedDate: '',
+      startDate: '',
+      deadline: '',
+      order: 0,
+      priority: TaskPriorities.Low,
+      description: ''
+    });
     dispatchToTasks(action);
   };
-  const changeTaskStatus = (taskId: string, status: TaskStatuses, todolistId: string) => {
-    const action = changeTaskStatusAC(taskId, status, todolistId);
+  const changeTaskStatus = (taskId: string, todolistId: string, status: TaskStatuses) => {
+    const action = updateTaskAC(taskId, todolistId, {status});
     dispatchToTasks(action);
   };
   const changeTaskTitle = (taskId: string, title: string, todolistId: string) => {
-    const action = changeTaskTitleAC(taskId, title, todolistId);
+    const action = updateTaskAC(taskId, todolistId, {title});
     dispatchToTasks(action);
   };
 
   //todolists
   const addTodolist = (title: string): void => {
-    const action = addTodolistAC(title);
+    const action = addTodolistAC({id: 'todolistId_1', title: title, order: 0, addedDate: ''});
     dispatchToTodolists(action);
     dispatchToTasks(action);
   };
