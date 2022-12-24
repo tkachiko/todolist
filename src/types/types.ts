@@ -8,6 +8,7 @@ import {
 import {addTaskAC, removeTaskAC, setTasksAC, updateTaskAC} from '../features/TodolistsList/tasks-reducer';
 import {AppRootStateType} from '../app/store';
 import {ThunkAction, ThunkDispatch} from 'redux-thunk'
+import {setStatusActionType} from '../app/app-reducer'
 
 // api types
 export type TodolistType = {
@@ -63,7 +64,7 @@ export enum TaskPriorities {
   Later = 4
 }
 
-// TodolistsList types
+// todolistsList types
 export type FilterType = 'all' | 'active' | 'completed'
 export type TodolistDomainType = TodolistType & {
   filter: FilterType
@@ -109,7 +110,7 @@ type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>
 type SetTodolistsActionType = ReturnType<typeof setTodolistsAC>
 
 // all actions types for app
-export type AppActionsType = TodolistsActionsType | TasksActionsType
+export type AppActionsType = TodolistsActionsType | TasksActionsType | setStatusActionType
 
 export type ThunkAppDispatchType<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, AppActionsType>
 export type AppThunk = ThunkDispatch<AppRootStateType, unknown, AppActionsType>

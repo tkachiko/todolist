@@ -1,38 +1,40 @@
-import React from 'react';
-import {ComponentMeta, ComponentStory} from '@storybook/react';
-import {App} from './App';
-import {ReduxStoreProviderDecorator} from '../stories/ReduxStoreProviderDecorator';
-import {combineReducers, createStore} from 'redux';
-import {v1} from 'uuid';
-import {tasksReducer} from '../features/TodolistsList/tasks-reducer';
-import {todolistsReducer} from '../features/TodolistsList/todolists-reducer';
-import {AppRootStateType} from './store';
-import {TaskPriorities, TaskStatuses} from '../types/types';
+import React from 'react'
+import {ComponentMeta, ComponentStory} from '@storybook/react'
+import {App} from './App'
+import {ReduxStoreProviderDecorator} from '../stories/ReduxStoreProviderDecorator'
+import {combineReducers, createStore} from 'redux'
+import {v1} from 'uuid'
+import {tasksReducer} from '../features/TodolistsList/tasks-reducer'
+import {todolistsReducer} from '../features/TodolistsList/todolists-reducer'
+import {AppRootStateType} from './store'
+import {TaskPriorities, TaskStatuses} from '../types/types'
+import {appReducer} from './app-reducer'
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
   title: 'TODOLIST/App',
   component: App,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-  decorators: [ReduxStoreProviderDecorator]
-} as ComponentMeta<typeof App>;
+  decorators: [ReduxStoreProviderDecorator],
+} as ComponentMeta<typeof App>
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof App> = (args) => <App {...args} />;
+const Template: ComponentStory<typeof App> = (args) => <App {...args} />
 
-export const AppStory = Template.bind({});
+export const AppStory = Template.bind({})
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 
 
 const rootReducer = combineReducers({
   tasks: tasksReducer,
-  todolists: todolistsReducer
-});
+  todolists: todolistsReducer,
+  app: appReducer,
+})
 
 const initialGlobalState: AppRootStateType = {
   todolists: [
     {id: 'todolistId1', title: 'What to learn', filter: 'all', addedDate: '', order: 0},
-    {id: 'todolistId2', title: 'What to buy', filter: 'all', addedDate: '', order: 0}
+    {id: 'todolistId2', title: 'What to buy', filter: 'all', addedDate: '', order: 0},
   ],
   tasks: {
     'todolistId1': [
@@ -46,7 +48,7 @@ const initialGlobalState: AppRootStateType = {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
       },
       {
         id: v1(),
@@ -58,8 +60,8 @@ const initialGlobalState: AppRootStateType = {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
-      }
+        description: '',
+      },
     ],
     'todolistId2': [
       {
@@ -72,7 +74,7 @@ const initialGlobalState: AppRootStateType = {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
       },
       {
         id: v1(),
@@ -84,10 +86,13 @@ const initialGlobalState: AppRootStateType = {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
-      }
-    ]
-  }
-};
+        description: '',
+      },
+    ],
+  },
+  app: {
+    status: 'loading',
+  },
+}
 
-export const storyBookStore = createStore(rootReducer, initialGlobalState);
+export const storyBookStore = createStore(rootReducer, initialGlobalState)

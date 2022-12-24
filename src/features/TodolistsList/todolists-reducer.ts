@@ -1,5 +1,12 @@
-import {ThunkAppDispatchType, FilterType, TodolistDomainType, TodolistsActionsType, TodolistType} from '../../types/types'
+import {
+  ThunkAppDispatchType,
+  FilterType,
+  TodolistDomainType,
+  TodolistsActionsType,
+  TodolistType,
+} from '../../types/types'
 import {todolistAPI} from '../../api/todolist-api'
+import {setAppStatusAC} from '../../app/app-reducer'
 
 const initialState: TodolistDomainType[] = []
 
@@ -34,29 +41,37 @@ export const setTodolistsAC = (todolists: TodolistType[]) =>
 
 // thunks
 export const getTodolistsTC = (): ThunkAppDispatchType => async dispatch => {
+  dispatch(setAppStatusAC('loading'))
   try {
     const res = await todolistAPI.getTodolist()
     dispatch(setTodolistsAC(res.data))
+    dispatch(setAppStatusAC('succeeded'))
   } catch (e) {
     console.log(e)
     throw new Error()
   }
 }
 export const removeTodolistTC = (id: string): ThunkAppDispatchType => (dispatch) => {
+  dispatch(setAppStatusAC('loading'))
   todolistAPI.deleteTodolist(id)
     .then(() => {
       dispatch(removeTodolistAC(id))
+      dispatch(setAppStatusAC('succeeded'))
     })
 }
 export const addTodolistTC = (title: string): ThunkAppDispatchType => (dispatch) => {
+  dispatch(setAppStatusAC('loading'))
   todolistAPI.createTodolist(title)
     .then(res => {
       dispatch(addTodolistAC(res.data.data.item))
+      dispatch(setAppStatusAC('succeeded'))
     })
 }
 export const changeTodolistTitleTC = (id: string, title: string): ThunkAppDispatchType => (dispatch) => {
+  dispatch(setAppStatusAC('loading'))
   todolistAPI.updateTodolist(id, title)
     .then(() => {
       dispatch(changeTodolistTitleAC(id, title))
+      dispatch(setAppStatusAC('succeeded'))
     })
 }

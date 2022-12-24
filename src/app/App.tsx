@@ -1,10 +1,19 @@
 import {FC} from 'react';
 import './App.css';
-import {AppBar, Button, Container, IconButton, Toolbar, Typography} from '@mui/material';
-import {Menu} from '@mui/icons-material';
+import AppBar from '@mui/material/AppBar'
+import Button from '@mui/material/Button'
+import Container from '@mui/material/Container'
+import IconButton from '@mui/material/IconButton'
+import LinearProgress from '@mui/material/LinearProgress'
+import Toolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
+import Menu from '@mui/icons-material/Menu';
 import {TodolistsList} from '../features/TodolistsList/TodolistsList';
+import {useAppSelector} from './hooks'
+import {RequestStatusType} from './app-reducer'
 
 export const App: FC = () => {
+const status = useAppSelector<RequestStatusType>(state => state.app.status)
 
   return (
     <div className="App">
@@ -30,6 +39,7 @@ export const App: FC = () => {
             variant={'outlined'}
           >Login</Button>
         </Toolbar>
+        {status === 'loading' && <LinearProgress color={'secondary'} />}
       </AppBar>
       <Container fixed>
         <TodolistsList/>
