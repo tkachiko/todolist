@@ -1,33 +1,34 @@
-import {ChangeEvent, FC, KeyboardEvent, memo, useState} from 'react';
-import {IconButton, TextField} from '@mui/material';
-import {AddCircle} from '@mui/icons-material';
+import {ChangeEvent, FC, KeyboardEvent, memo, useState} from 'react'
+import IconButton from '@mui/material/IconButton'
+import TextField from '@mui/material/TextField'
+import AddCircle from '@mui/icons-material/AddCircle'
 
 type AddItemFormPropsType = {
   addItem: (title: string) => void
 }
 
 export const AddItemForm: FC<AddItemFormPropsType> = memo((props) => {
-  const [title, setTitle] = useState<string>('');
-  const [error, setError] = useState<string | null>(null);
+  const [title, setTitle] = useState<string>('')
+  const [error, setError] = useState<string | null>(null)
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>): void => {
-    setTitle(e.currentTarget.value);
-    error && setError('Title is required');
-  };
+    setTitle(e.currentTarget.value)
+    error && setError('Title is required')
+  }
   const addItem = (): void => {
     if (title.trim() !== '') {
-      props.addItem(title.trim());
+      props.addItem(title.trim())
     } else {
-      setError('Title is required');
+      setError('Title is required')
     }
-    setTitle('');
-  };
+    setTitle('')
+  }
   const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>): void => {
-    if (error) setError(null);
+    if (error) setError(null)
     if (e.key === 'Enter') {
-      addItem();
+      addItem()
     }
-  };
+  }
 
   return (
     <div>
@@ -48,5 +49,5 @@ export const AddItemForm: FC<AddItemFormPropsType> = memo((props) => {
         />
       </IconButton>
     </div>
-  );
-});
+  )
+})

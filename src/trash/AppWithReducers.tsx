@@ -1,34 +1,41 @@
-import React, {Reducer, useReducer} from 'react';
-import '../app/App.css';
-import {Todolist} from './Todolist';
-import {v1} from 'uuid';
-import {AddItemForm} from '../components/AddItemForm/AddItemForm';
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@mui/material';
-import {Menu} from '@mui/icons-material';
+import React, {Reducer, useReducer} from 'react'
+import '../app/App.css'
+import {Todolist} from './Todolist'
+import {v1} from 'uuid'
+import {AddItemForm} from '../components/AddItemForm/AddItemForm'
+import AppBar from '@mui/material/AppBar'
+import Button from '@mui/material/Button'
+import Container from '@mui/material/Container'
+import Grid from '@mui/material/Grid'
+import IconButton from '@mui/material/IconButton'
+import Paper from '@mui/material/Paper'
+import Toolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
+import Menu from '@mui/icons-material/Menu'
 import {
   addTodolistAC,
   changeTodolistFilterAC,
   changeTodolistTitleAC,
   removeTodolistAC,
-  todolistsReducer
-} from '../features/TodolistsList/todolists-reducer';
-import {addTaskAC, removeTaskAC, tasksReducer, updateTaskAC} from '../features/TodolistsList/tasks-reducer';
+  todolistsReducer,
+} from '../features/TodolistsList/todolists-reducer'
+import {addTaskAC, removeTaskAC, tasksReducer, updateTaskAC} from '../features/TodolistsList/tasks-reducer'
 import {
   FilterType,
   TaskPriorities, TasksActionsType,
   TaskStateType,
   TaskStatuses,
   TaskType,
-  TodolistDomainType, TodolistsActionsType
-} from '../types/types';
+  TodolistDomainType, TodolistsActionsType,
+} from '../types/types'
 
 export const AppWithReducers: React.FC = () => {
-  const todolistId_1 = v1();
-  const todolistId_2 = v1();
+  const todolistId_1 = v1()
+  const todolistId_2 = v1()
   const [todolists, dispatchToTodolists] = useReducer<Reducer<TodolistDomainType[], TodolistsActionsType>>(todolistsReducer, [
     {id: todolistId_1, title: 'What to learn', filter: 'all', addedDate: '', order: 0},
     {id: todolistId_2, title: 'What to buy', filter: 'all', addedDate: '', order: 0},
-  ]);
+  ])
 
   const [tasks, dispatchToTasks] = useReducer<Reducer<TaskStateType, TasksActionsType>>(tasksReducer, {
     [todolistId_1]: [
@@ -42,7 +49,7 @@ export const AppWithReducers: React.FC = () => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
       },
       {
         id: v1(),
@@ -54,7 +61,7 @@ export const AppWithReducers: React.FC = () => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
       },
       {
         id: v1(),
@@ -66,7 +73,7 @@ export const AppWithReducers: React.FC = () => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
       },
       {
         id: v1(),
@@ -78,7 +85,7 @@ export const AppWithReducers: React.FC = () => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
       },
       {
         id: v1(),
@@ -90,7 +97,7 @@ export const AppWithReducers: React.FC = () => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
       },
     ],
     [todolistId_2]: [
@@ -104,7 +111,7 @@ export const AppWithReducers: React.FC = () => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
       },
       {
         id: v1(),
@@ -116,7 +123,7 @@ export const AppWithReducers: React.FC = () => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
       },
       {
         id: v1(),
@@ -128,7 +135,7 @@ export const AppWithReducers: React.FC = () => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
       },
       {
         id: v1(),
@@ -140,7 +147,7 @@ export const AppWithReducers: React.FC = () => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
       },
       {
         id: v1(),
@@ -152,16 +159,16 @@ export const AppWithReducers: React.FC = () => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
       },
     ],
-  });
+  })
 
   // tasks
   const removeTask = (taskId: string, todolistId: string) => {
-    const action = removeTaskAC(taskId, todolistId);
-    dispatchToTasks(action);
-  };
+    const action = removeTaskAC(taskId, todolistId)
+    dispatchToTasks(action)
+  }
   const addTask = (todolistId: string, title: string): void => {
     const action = addTaskAC({
       id: '1',
@@ -173,52 +180,52 @@ export const AppWithReducers: React.FC = () => {
       deadline: '',
       order: 0,
       priority: TaskPriorities.Low,
-      description: ''
-    });
-    dispatchToTasks(action);
-  };
+      description: '',
+    })
+    dispatchToTasks(action)
+  }
   const changeTaskStatus = (taskId: string, todolistId: string, status: TaskStatuses) => {
-    const action = updateTaskAC(taskId, todolistId, {status});
-    dispatchToTasks(action);
-  };
+    const action = updateTaskAC(taskId, todolistId, {status})
+    dispatchToTasks(action)
+  }
   const changeTaskTitle = (taskId: string, title: string, todolistId: string) => {
-    const action = updateTaskAC(taskId, todolistId, {title});
-    dispatchToTasks(action);
-  };
+    const action = updateTaskAC(taskId, todolistId, {title})
+    dispatchToTasks(action)
+  }
 
   //TodolistsList
   const addTodolist = (title: string): void => {
-    const action = addTodolistAC({id: 'todolistId_1', title: title, order: 0, addedDate: ''});
-    dispatchToTodolists(action);
-    dispatchToTasks(action);
-  };
+    const action = addTodolistAC({id: 'todolistId_1', title: title, order: 0, addedDate: ''})
+    dispatchToTodolists(action)
+    dispatchToTasks(action)
+  }
   const removeTodolist = (todolistId: string): void => {
-    const action = removeTodolistAC(todolistId);
-    dispatchToTodolists(action);
-    dispatchToTasks(action);
-  };
+    const action = removeTodolistAC(todolistId)
+    dispatchToTodolists(action)
+    dispatchToTasks(action)
+  }
   const changeTodolistFilter = (filter: FilterType, todolistId: string): void => {
-    const action = changeTodolistFilterAC(todolistId, filter);
-    dispatchToTodolists(action);
-  };
+    const action = changeTodolistFilterAC(todolistId, filter)
+    dispatchToTodolists(action)
+  }
   const changeTodolistTitle = (title: string, todolistId: string): void => {
-    const action = changeTodolistTitleAC(todolistId, title);
-    dispatchToTodolists(action);
-  };
+    const action = changeTodolistTitleAC(todolistId, title)
+    dispatchToTodolists(action)
+  }
 
   const getFilteredTasks = (task: Array<TaskType>, filter: FilterType): Array<TaskType> => {
-    let tasksForTodolist = task;
+    let tasksForTodolist = task
     if (filter === 'active') {
-      tasksForTodolist = task.filter(t => t.status === TaskStatuses.New);
+      tasksForTodolist = task.filter(t => t.status === TaskStatuses.New)
     }
     if (filter === 'completed') {
-      tasksForTodolist = task.filter(t => t.status === TaskStatuses.Completed);
+      tasksForTodolist = task.filter(t => t.status === TaskStatuses.Completed)
     }
-    return tasksForTodolist;
-  };
+    return tasksForTodolist
+  }
 
   const todolist = todolists.map(tl => {
-    const filteredTasks = getFilteredTasks(tasks[tl.id], tl.filter);
+    const filteredTasks = getFilteredTasks(tasks[tl.id], tl.filter)
     return (
       <Grid
         item
@@ -242,8 +249,8 @@ export const AppWithReducers: React.FC = () => {
           />
         </Paper>
       </Grid>
-    );
-  });
+    )
+  })
 
   return (
     <div className="App">
@@ -255,7 +262,7 @@ export const AppWithReducers: React.FC = () => {
             aria-label={'menu'}
             sx={{mr: 2}}
           >
-            <Menu/>
+            <Menu />
           </IconButton>
           <Typography
             variant={'h6'}
@@ -272,12 +279,12 @@ export const AppWithReducers: React.FC = () => {
       </AppBar>
       <Container fixed>
         <Grid container style={{padding: '20px 0'}}>
-          <AddItemForm addItem={addTodolist}/>
+          <AddItemForm addItem={addTodolist} />
         </Grid>
         <Grid container spacing={3}>
           {todolist}
         </Grid>
       </Container>
     </div>
-  );
-};
+  )
+}

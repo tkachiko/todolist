@@ -1,6 +1,6 @@
 import {Checkbox, IconButton, ListItem} from '@mui/material';
 import {EditableSpan} from '../../../../components/EditableSpan/EditableSpan';
-import {RemoveCircle} from '@mui/icons-material';
+import RemoveCircle from '@mui/icons-material/RemoveCircle';
 import {ChangeEvent, FC, memo} from 'react';
 import {removeTaskTC, updateTaskTC} from '../../tasks-reducer';
 import {TaskStatuses, TaskType} from '../../../../types/types';

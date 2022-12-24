@@ -1,8 +1,12 @@
 import {FC, memo, useCallback, useEffect, useMemo} from 'react';
 import {AddItemForm} from '../../../components/AddItemForm/AddItemForm';
 import {EditableSpan} from '../../../components/EditableSpan/EditableSpan';
-import {Button, ButtonGroup, IconButton, List, Typography} from '@mui/material';
-import {RemoveCircle} from '@mui/icons-material';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import Typography from '@mui/material/Typography';
+import RemoveCircle from '@mui/icons-material/RemoveCircle';
 import {createTaskTC, getTasksTC} from '../tasks-reducer';
 import {changeTodolistFilterAC, changeTodolistTitleTC, removeTodolistTC,} from '../todolists-reducer';
 import {Task} from './Task/Task';

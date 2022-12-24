@@ -1,8 +1,14 @@
 import React, {ChangeEvent, useEffect} from 'react';
 import {AddItemForm} from '../components/AddItemForm/AddItemForm';
 import {EditableSpan} from '../components/EditableSpan/EditableSpan';
-import {Button, ButtonGroup, Checkbox, IconButton, List, ListItem, Typography} from '@mui/material';
-import {RemoveCircle} from '@mui/icons-material';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Typography from '@mui/material/Typography';
+import RemoveCircle from '@mui/icons-material/RemoveCircle';
+import Checkbox from '@mui/material/Checkbox';
 import {getTasksTC} from '../features/TodolistsList/tasks-reducer';
 import {FilterType, TaskStatuses, TaskType} from '../types/types';
 import {useAppDispatch} from '../app/hooks'

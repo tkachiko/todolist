@@ -1,5 +1,5 @@
-import React, {ChangeEvent, memo, useCallback, useState} from 'react';
-import {TextField} from '@mui/material';
+import React, {ChangeEvent, memo, useCallback, useState} from 'react'
+import TextField from '@mui/material/TextField'
 
 type EditableSpanPropsType = {
   value: string
@@ -7,22 +7,22 @@ type EditableSpanPropsType = {
 }
 
 export const EditableSpan: React.FC<EditableSpanPropsType> = memo((props) => {
-  const [isEditMode, setIsEditMode] = useState<boolean>(false);
-  const [title, setTitle] = useState<string>(props.value);
+  const [isEditMode, setIsEditMode] = useState<boolean>(false)
+  const [title, setTitle] = useState<string>(props.value)
 
-  const setEditModeOn = useCallback((): void => setIsEditMode(true), []);
+  const setEditModeOn = useCallback((): void => setIsEditMode(true), [])
   const setEditModeOff = useCallback((): void => {
-    setIsEditMode(false);
-    props.onChange(title);
-  }, [props, title]);
+    setIsEditMode(false)
+    props.onChange(title)
+  }, [props, title])
   const onNewTitleChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>): void => {
-    setTitle(e.currentTarget.value);
-  }, []);
+    setTitle(e.currentTarget.value)
+  }, [])
   const onEnterDownSave = useCallback((e: React.KeyboardEvent<HTMLInputElement>): void => {
     if (e.key === 'Enter') {
-      setEditModeOff();
+      setEditModeOff()
     }
-  }, [setEditModeOff]);
+  }, [setEditModeOff])
 
   return (
     isEditMode
@@ -36,5 +36,5 @@ export const EditableSpan: React.FC<EditableSpanPropsType> = memo((props) => {
         variant={'standard'}
       />
       : <span onDoubleClick={setEditModeOn}>{props.value}</span>
-  );
-});
+  )
+})
