@@ -1,14 +1,20 @@
 import {
-  ThunkAppDispatchType,
   TasksActionsType,
   TaskStateType,
   TaskType,
+  ThunkAppDispatchType,
   UpdateDomainTaskModelType,
   UpdateTaskModelType,
 } from '../../types/types'
 import {todolistAPI} from '../../api/todolist-api'
 import {AppRootStateType} from '../../app/store'
 import {setAppStatusAC} from '../../app/app-reducer'
+import {ADD_TODOLIST, REMOVE_TODOLIST, SET_TODOS} from './todolists-reducer'
+
+export const REMOVE_TASK = 'todolist/tasks/REMOVE_TASK'
+export const ADD_TASK = 'todolist/tasks/ADD_TASK'
+export const UPDATE_TASK = 'todolist/tasks/UPDATE_TASK'
+export const SET_TASKS = 'todolist/tasks/SET_TASKS'
 
 const initialState: TaskStateType = {}
 
@@ -16,31 +22,31 @@ export const tasksReducer = (state = initialState, action: TasksActionsType) => 
   const stateCopy = {...state}
 
   switch (action.type) {
-    case 'REMOVE_TASK':
+    case REMOVE_TASK:
       return {
         ...state,
         [action.todolistId]: state[action.todolistId].filter(t => t.id !== action.taskId),
       }
-    case 'ADD_TASK':
+    case ADD_TASK:
       return {
         ...state,
         [action.task.todoListId]: [action.task, ...state[action.task.todoListId]],
       }
-    case 'UPDATE_TASK':
+    case UPDATE_TASK:
       return {
         ...state,
         [action.todolistId]: state[action.todolistId]
           .map(task => task.id === action.taskId ? {...task, ...action.model} : task),
       }
-    case 'ADD_TODOLIST':
+    case ADD_TODOLIST:
       return {...state, [action.todolist.id]: []}
-    case 'REMOVE_TODOLIST':
+    case REMOVE_TODOLIST:
       delete stateCopy[action.id]
       return stateCopy
-    case 'SET_TODOS':
+    case SET_TODOS:
       action.todolists.forEach(tl => stateCopy[tl.id] = [])
       return stateCopy
-    case 'SET_TASKS':
+    case SET_TASKS:
       return {...state, [action.todolistId]: action.tasks}
     default:
       return state
@@ -49,13 +55,13 @@ export const tasksReducer = (state = initialState, action: TasksActionsType) => 
 
 // actions
 export const removeTaskAC = (taskId: string, todolistId: string) =>
-  ({type: 'REMOVE_TASK', taskId, todolistId} as const)
+  ({type: REMOVE_TASK, taskId, todolistId} as const)
 export const addTaskAC = (task: TaskType) =>
-  ({type: 'ADD_TASK', task} as const)
+  ({type: ADD_TASK, task} as const)
 export const updateTaskAC = (taskId: string, todolistId: string, model: UpdateDomainTaskModelType) =>
-  ({type: 'UPDATE_TASK', taskId, todolistId, model} as const)
+  ({type: UPDATE_TASK, taskId, todolistId, model} as const)
 export const setTasksAC = (tasks: TaskType[], todolistId: string) =>
-  ({type: 'SET_TASKS', tasks, todolistId} as const)
+  ({type: SET_TASKS, tasks, todolistId} as const)
 
 // thunks
 export const getTasksTC = (todolistId: string): ThunkAppDispatchType => async (dispatch) => {

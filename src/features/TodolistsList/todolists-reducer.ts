@@ -8,19 +8,25 @@ import {
 import {todolistAPI} from '../../api/todolist-api'
 import {setAppStatusAC} from '../../app/app-reducer'
 
+export const REMOVE_TODOLIST = 'todolist/todolists/REMOVE_TODOLIST'
+export const ADD_TODOLIST = 'todolist/todolists/ADD_TODOLIST'
+export const CHANGE_TODOLIST_FILTER = 'todolist/todolists/CHANGE_TODOLIST_FILTER'
+export const CHANGE_TODOLIST_TITLE = 'todolist/todolists/CHANGE_TODOLIST_TITLE'
+export const SET_TODOS = 'todolist/todolists/SET_TODOS'
+
 const initialState: TodolistDomainType[] = []
 
 export const todolistsReducer = (state: TodolistDomainType[] = initialState, action: TodolistsActionsType): TodolistDomainType[] => {
   switch (action.type) {
-    case 'REMOVE_TODOLIST':
+    case REMOVE_TODOLIST:
       return state.filter(tl => tl.id !== action.id)
-    case 'ADD_TODOLIST':
+    case ADD_TODOLIST:
       return [{...action.todolist, filter: 'all'}, ...state]
-    case 'CHANGE_TODOLIST_FILTER':
+    case CHANGE_TODOLIST_FILTER:
       return state.map(tl => tl.id === action.id ? {...tl, filter: action.filter} : tl)
-    case 'CHANGE_TODOLIST_TITLE':
+    case CHANGE_TODOLIST_TITLE:
       return state.map(tl => tl.id === action.id ? {...tl, title: action.title} : tl)
-    case 'SET_TODOS':
+    case SET_TODOS:
       return action.todolists.map(tl => ({...tl, filter: 'all'}))
     default:
       return state
@@ -29,15 +35,15 @@ export const todolistsReducer = (state: TodolistDomainType[] = initialState, act
 
 // actions
 export const removeTodolistAC = (id: string) =>
-  ({type: 'REMOVE_TODOLIST', id} as const)
+  ({type: REMOVE_TODOLIST, id} as const)
 export const addTodolistAC = (todolist: TodolistType) =>
-  ({type: 'ADD_TODOLIST', todolist} as const)
+  ({type: ADD_TODOLIST, todolist} as const)
 export const changeTodolistFilterAC = (id: string, filter: FilterType) =>
-  ({type: 'CHANGE_TODOLIST_FILTER', id, filter} as const)
+  ({type: CHANGE_TODOLIST_FILTER, id, filter} as const)
 export const changeTodolistTitleAC = (id: string, title: string) =>
-  ({type: 'CHANGE_TODOLIST_TITLE', id, title} as const)
+  ({type: CHANGE_TODOLIST_TITLE, id, title} as const)
 export const setTodolistsAC = (todolists: TodolistType[]) =>
-  ({type: 'SET_TODOS', todolists} as const)
+  ({type: SET_TODOS, todolists} as const)
 
 // thunks
 export const getTodolistsTC = (): ThunkAppDispatchType => async dispatch => {
