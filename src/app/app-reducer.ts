@@ -18,6 +18,4 @@ export const appReducer = (state: InitialStateType = initialState, action: setSt
 
 // actions
 export const setAppStatusAC = (status: RequestStatusType) =>
-  ({type: 'SET_STATUS', status} as const);
-
-// thunks
+  ({type: 'SET_STATUS', status} as const)

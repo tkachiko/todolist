@@ -58,31 +58,25 @@ export const setTasksAC = (tasks: TaskType[], todolistId: string) =>
   ({type: 'SET_TASKS', tasks, todolistId} as const)
 
 // thunks
-export const getTasksTC = (todolistId: string): ThunkAppDispatchType => (dispatch) => {
+export const getTasksTC = (todolistId: string): ThunkAppDispatchType => async (dispatch) => {
   dispatch(setAppStatusAC('loading'))
-  todolistAPI.getTasks(todolistId)
-    .then(res => {
-      dispatch(setTasksAC(res.data.items, todolistId))
-      dispatch(setAppStatusAC('succeeded'))
-    })
+  const res = await todolistAPI.getTasks(todolistId)
+  dispatch(setTasksAC(res.data.items, todolistId))
+  dispatch(setAppStatusAC('succeeded'))
 }
-export const removeTaskTC = (taskId: string, todolistId: string): ThunkAppDispatchType => (dispatch) => {
+export const removeTaskTC = (taskId: string, todolistId: string): ThunkAppDispatchType => async (dispatch) => {
   dispatch(setAppStatusAC('loading'))
-  todolistAPI.deleteTask(todolistId, taskId)
-    .then(res => {
-      dispatch(removeTaskAC(taskId, todolistId))
-      dispatch(setAppStatusAC('succeeded'))
-    })
+  await todolistAPI.deleteTask(todolistId, taskId)
+  dispatch(removeTaskAC(taskId, todolistId))
+  dispatch(setAppStatusAC('succeeded'))
 }
-export const createTaskTC = (todolistId: string, title: string): ThunkAppDispatchType => (dispatch) => {
+export const createTaskTC = (todolistId: string, title: string): ThunkAppDispatchType => async (dispatch) => {
   dispatch(setAppStatusAC('loading'))
-  todolistAPI.createTask(todolistId, title)
-    .then(res => {
-      dispatch(addTaskAC(res.data.data.item))
-      dispatch(setAppStatusAC('succeeded'))
-    })
+  const res = await todolistAPI.createTask(todolistId, title)
+  dispatch(addTaskAC(res.data.data.item))
+  dispatch(setAppStatusAC('succeeded'))
 }
-export const updateTaskTC = (todolistId: string, taskId: string, domainModel: UpdateDomainTaskModelType): ThunkAppDispatchType => (dispatch, getState: () => AppRootStateType) => {
+export const updateTaskTC = (todolistId: string, taskId: string, domainModel: UpdateDomainTaskModelType): ThunkAppDispatchType => async (dispatch, getState: () => AppRootStateType) => {
   dispatch(setAppStatusAC('loading'))
   const task = getState().tasks[todolistId].find(t => t.id === taskId)
 
@@ -97,10 +91,8 @@ export const updateTaskTC = (todolistId: string, taskId: string, domainModel: Up
       deadline: task.deadline,
       ...domainModel,
     }
-    todolistAPI.updateTask(todolistId, taskId, apiModel)
-      .then(res => {
-        dispatch(updateTaskAC(taskId, todolistId, domainModel))
-        dispatch(setAppStatusAC('succeeded'))
-      })
+    await todolistAPI.updateTask(todolistId, taskId, apiModel)
+    dispatch(updateTaskAC(taskId, todolistId, domainModel))
+    dispatch(setAppStatusAC('succeeded'))
   }
 }

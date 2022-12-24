@@ -51,27 +51,21 @@ export const getTodolistsTC = (): ThunkAppDispatchType => async dispatch => {
     throw new Error()
   }
 }
-export const removeTodolistTC = (id: string): ThunkAppDispatchType => (dispatch) => {
+export const removeTodolistTC = (id: string): ThunkAppDispatchType => async (dispatch) => {
   dispatch(setAppStatusAC('loading'))
-  todolistAPI.deleteTodolist(id)
-    .then(() => {
-      dispatch(removeTodolistAC(id))
-      dispatch(setAppStatusAC('succeeded'))
-    })
+  await todolistAPI.deleteTodolist(id)
+  dispatch(removeTodolistAC(id))
+  dispatch(setAppStatusAC('succeeded'))
 }
-export const addTodolistTC = (title: string): ThunkAppDispatchType => (dispatch) => {
+export const addTodolistTC = (title: string): ThunkAppDispatchType => async (dispatch) => {
   dispatch(setAppStatusAC('loading'))
-  todolistAPI.createTodolist(title)
-    .then(res => {
-      dispatch(addTodolistAC(res.data.data.item))
-      dispatch(setAppStatusAC('succeeded'))
-    })
+  const res = await todolistAPI.createTodolist(title)
+  dispatch(addTodolistAC(res.data.data.item))
+  dispatch(setAppStatusAC('succeeded'))
 }
-export const changeTodolistTitleTC = (id: string, title: string): ThunkAppDispatchType => (dispatch) => {
+export const changeTodolistTitleTC = (id: string, title: string): ThunkAppDispatchType => async (dispatch) => {
   dispatch(setAppStatusAC('loading'))
-  todolistAPI.updateTodolist(id, title)
-    .then(() => {
-      dispatch(changeTodolistTitleAC(id, title))
-      dispatch(setAppStatusAC('succeeded'))
-    })
+  await todolistAPI.updateTodolist(id, title)
+  dispatch(changeTodolistTitleAC(id, title))
+  dispatch(setAppStatusAC('succeeded'))
 }
