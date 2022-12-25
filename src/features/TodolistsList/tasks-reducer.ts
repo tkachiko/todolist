@@ -1,4 +1,5 @@
 import {
+  ResultCode,
   TasksActionsType,
   TaskStateType,
   TaskType,
@@ -8,8 +9,10 @@ import {
 } from '../../types/types'
 import {todolistAPI} from '../../api/todolist-api'
 import {AppRootStateType} from '../../app/store'
-import {setAppStatusAC} from '../../app/app-reducer'
-import {ADD_TODOLIST, REMOVE_TODOLIST, SET_TODOS} from './todolists-reducer'
+import {setAppErrorAC, setAppStatusAC} from '../../app/app-reducer'
+import {ADD_TODOLIST, changeTodolistEntityStatusAC, REMOVE_TODOLIST, SET_TODOS} from './todolists-reducer'
+import axios, {AxiosError} from 'axios'
+import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils'
 
 export const REMOVE_TASK = 'todolist/tasks/REMOVE_TASK'
 export const ADD_TASK = 'todolist/tasks/ADD_TASK'
@@ -72,15 +75,30 @@ export const getTasksTC = (todolistId: string): ThunkAppDispatchType => async (d
 }
 export const removeTaskTC = (taskId: string, todolistId: string): ThunkAppDispatchType => async (dispatch) => {
   dispatch(setAppStatusAC('loading'))
+  dispatch(changeTodolistEntityStatusAC(todolistId, 'loading'))
   await todolistAPI.deleteTask(todolistId, taskId)
   dispatch(removeTaskAC(taskId, todolistId))
   dispatch(setAppStatusAC('succeeded'))
+  dispatch(changeTodolistEntityStatusAC(todolistId, 'idle'))
 }
 export const createTaskTC = (todolistId: string, title: string): ThunkAppDispatchType => async (dispatch) => {
   dispatch(setAppStatusAC('loading'))
-  const res = await todolistAPI.createTask(todolistId, title)
-  dispatch(addTaskAC(res.data.data.item))
-  dispatch(setAppStatusAC('succeeded'))
+  try {
+    const res = await todolistAPI.createTask(todolistId, title)
+    if (res.data.resultCode === ResultCode.SUCCESS) {
+      dispatch(addTaskAC(res.data.data.item))
+      dispatch(setAppStatusAC('succeeded'))
+    } else {
+      handleServerAppError<{ item: TaskType }>(res.data, dispatch)
+    }
+  } catch (e) {
+    if (axios.isAxiosError<AxiosError<{ message: string }>>(e)) {
+      const error = e.response ? e.response.data.message : e.message
+      handleServerNetworkError(error, dispatch)
+    } else {
+      dispatch(setAppErrorAC('An unexpected error occurred'))
+    }
+  }
 }
 export const updateTaskTC = (todolistId: string, taskId: string, domainModel: UpdateDomainTaskModelType): ThunkAppDispatchType => async (dispatch, getState: () => AppRootStateType) => {
   dispatch(setAppStatusAC('loading'))
@@ -97,8 +115,21 @@ export const updateTaskTC = (todolistId: string, taskId: string, domainModel: Up
       deadline: task.deadline,
       ...domainModel,
     }
-    await todolistAPI.updateTask(todolistId, taskId, apiModel)
-    dispatch(updateTaskAC(taskId, todolistId, domainModel))
-    dispatch(setAppStatusAC('succeeded'))
+    try {
+      const res = await todolistAPI.updateTask(todolistId, taskId, apiModel)
+      if (res.data.resultCode === ResultCode.SUCCESS) {
+        dispatch(updateTaskAC(taskId, todolistId, domainModel))
+        dispatch(setAppStatusAC('succeeded'))
+      } else {
+        handleServerAppError(res.data, dispatch)
+      }
+    } catch (e) {
+      if (axios.isAxiosError<AxiosError<{ message: string }>>(e)) {
+        const error = e.response ? e.response.data.message : e.message
+        handleServerNetworkError(error, dispatch)
+      } else {
+        dispatch(setAppErrorAC('An unexpected error occurred'))
+      }
+    }
   }
 }

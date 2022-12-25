@@ -8,7 +8,7 @@ import {Todolist} from './Todolist/Todolist'
 import {useAppDispatch, useAppSelector} from '../../app/hooks'
 
 type TodolistsListPropsType = {}
-export const TodolistsList: FC<TodolistsListPropsType> = (props) => {
+export const TodolistsList: FC<TodolistsListPropsType> = () => {
   const todolists = useAppSelector<Array<TodolistDomainType>>(state => state.todolists)
   const dispatch = useAppDispatch()
 
@@ -23,7 +23,7 @@ export const TodolistsList: FC<TodolistsListPropsType> = (props) => {
   return (
     <>
       <Grid container style={{padding: '20px 0'}}>
-        <AddItemForm addItem={addTodolist} />
+        <AddItemForm addItem={addTodolist}/>
       </Grid>
       <Grid container spacing={3}>
         {todolists.map(tl => {
@@ -34,7 +34,7 @@ export const TodolistsList: FC<TodolistsListPropsType> = (props) => {
               elevation={16}
               style={{maxWidth: '280px', width: '100%', margin: '20px', padding: '20px'}}
             >
-              <Todolist todolist={tl} filter={tl.filter} />
+              <Todolist todolist={tl} filter={tl.filter} entityStatus={tl.entityStatus} />
             </Paper>
           </Grid>
         })}

@@ -5,6 +5,7 @@ import AddCircle from '@mui/icons-material/AddCircle'
 
 type AddItemFormPropsType = {
   addItem: (title: string) => void
+  disabled?: boolean
 }
 
 export const AddItemForm: FC<AddItemFormPropsType> = memo((props) => {
@@ -42,10 +43,12 @@ export const AddItemForm: FC<AddItemFormPropsType> = memo((props) => {
         label={'Title'}
         error={!!error}
         helperText={error && 'Title is required!'}
+        disabled={props.disabled}
       />
-      <IconButton onClick={addItem}>
+      <IconButton onClick={addItem}
+                  disabled={true}>
         <AddCircle
-          color={'primary'}
+          color={props.disabled ? 'disabled' : 'primary'}
         />
       </IconButton>
     </div>

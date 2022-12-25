@@ -1,27 +1,34 @@
-import React, {useState} from 'react';
-import '../app/App.css';
-import {Todolist} from './Todolist';
-import {v1} from 'uuid';
-import {AddItemForm} from '../components/AddItemForm/AddItemForm';
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from '@mui/material';
-import {Menu} from '@mui/icons-material';
-import {FilterType, TaskPriorities, TaskStateType, TaskStatuses, TaskType, TodolistDomainType} from '../types/types';
+import React, {useState} from 'react'
+import '../app/App.css'
+import {Todolist} from './Todolist'
+import {v1} from 'uuid'
+import {AddItemForm} from '../components/AddItemForm/AddItemForm'
+import AppBar from '@mui/material/AppBar'
+import Button from '@mui/material/Button'
+import Container from '@mui/material/Container'
+import Grid from '@mui/material/Grid'
+import IconButton from '@mui/material/IconButton'
+import Paper from '@mui/material/Paper'
+import Toolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
+import Menu from '@mui/icons-material/Menu'
+import {FilterType, TaskPriorities, TaskStateType, TaskStatuses, TaskType, TodolistDomainType} from '../types/types'
 
 const App: React.FC = () => {
-  const todolistId_1 = v1();
-  const todolistId_2 = v1();
+  const todolistId_1 = v1()
+  const todolistId_2 = v1()
   const [todolists, setTodolists] = useState<TodolistDomainType[]>(
     [
       {
         id: todolistId_1, title: 'What to learn', filter: 'all', addedDate: '',
-        order: 0
+        order: 0, entityStatus: 'idle',
       },
       {
         id: todolistId_2, title: 'What to buy', filter: 'all', addedDate: '',
-        order: 0
+        order: 0, entityStatus: 'idle',
       },
-    ]
-  );
+    ],
+  )
 
   const [tasks, setTasks] = useState<TaskStateType>({
     [todolistId_1]: [
@@ -35,7 +42,7 @@ const App: React.FC = () => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
       },
       {
         id: v1(),
@@ -47,7 +54,7 @@ const App: React.FC = () => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
       },
       {
         id: v1(),
@@ -59,7 +66,7 @@ const App: React.FC = () => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
       },
       {
         id: v1(),
@@ -71,7 +78,7 @@ const App: React.FC = () => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
       },
       {
         id: v1(),
@@ -83,7 +90,7 @@ const App: React.FC = () => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
       },
     ],
     [todolistId_2]: [
@@ -97,7 +104,7 @@ const App: React.FC = () => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
       },
       {
         id: v1(),
@@ -109,7 +116,7 @@ const App: React.FC = () => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
       },
       {
         id: v1(),
@@ -121,7 +128,7 @@ const App: React.FC = () => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
       },
       {
         id: v1(),
@@ -133,7 +140,7 @@ const App: React.FC = () => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
       },
       {
         id: v1(),
@@ -145,18 +152,18 @@ const App: React.FC = () => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
       },
     ],
-  });
+  })
 
   // tasks
   const removeTask = (taskId: string, todolistId: string) => {
     setTasks({
       ...tasks,
-      [todolistId]: tasks[todolistId].filter(t => t.id !== taskId)
-    });
-  };
+      [todolistId]: tasks[todolistId].filter(t => t.id !== taskId),
+    })
+  }
   const addTask = (todolistId: string, newTaskTitle: string): void => {
     const newTask: TaskType = {
       id: v1(),
@@ -168,63 +175,64 @@ const App: React.FC = () => {
       deadline: '',
       order: 0,
       priority: TaskPriorities.Low,
-      description: ''
-    };
+      description: '',
+    }
     setTasks({
       ...tasks,
-      [todolistId]: [newTask, ...tasks[todolistId]]
-    });
-  };
+      [todolistId]: [newTask, ...tasks[todolistId]],
+    })
+  }
   const changeTaskStatus = (taskId: string, todolistId: string, status: TaskStatuses) => {
     setTasks({
       ...tasks,
-      [todolistId]: tasks[todolistId].map(task => task.id === taskId ? {...task, status} : task)
-    });
-  };
+      [todolistId]: tasks[todolistId].map(task => task.id === taskId ? {...task, status} : task),
+    })
+  }
   const changeTaskTitle = (taskId: string, title: string, todolistId: string) => {
     setTasks({
       ...tasks,
-      [todolistId]: tasks[todolistId].map(task => task.id === taskId ? {...task, title} : task)
-    });
-  };
+      [todolistId]: tasks[todolistId].map(task => task.id === taskId ? {...task, title} : task),
+    })
+  }
 
   //TodolistsList
   const addTodolist = (title: string): void => {
-    const newTodolistId: string = v1();
+    const newTodolistId: string = v1()
     const newTodolist: TodolistDomainType = {
       id: newTodolistId,
       title,
       filter: 'all',
       addedDate: '',
-      order: 0
-    };
-    setTodolists([newTodolist, ...todolists]);
-    setTasks({[newTodolistId]: [], ...tasks});
-  };
+      order: 0,
+      entityStatus: 'idle',
+    }
+    setTodolists([newTodolist, ...todolists])
+    setTasks({[newTodolistId]: [], ...tasks})
+  }
   const removeTodolist = (todolistId: string): void => {
-    setTodolists(todolists.filter(tl => tl.id !== todolistId));
-    delete (tasks[todolistId]);
-  };
+    setTodolists(todolists.filter(tl => tl.id !== todolistId))
+    delete (tasks[todolistId])
+  }
   const changeTodolistFilter = (filter: FilterType, todolistId: string): void => {
-    setTodolists(todolists.map(tl => tl.id === todolistId ? {...tl, filter} : tl));
-  };
+    setTodolists(todolists.map(tl => tl.id === todolistId ? {...tl, filter} : tl))
+  }
   const changeTodolistTitle = (title: string, todolistId: string): void => {
-    setTodolists(todolists.map(tl => tl.id === todolistId ? {...tl, title} : tl));
-  };
+    setTodolists(todolists.map(tl => tl.id === todolistId ? {...tl, title} : tl))
+  }
 
   const getFilteredTasks = (task: Array<TaskType>, filter: FilterType): Array<TaskType> => {
-    let tasksForTodolist = task;
+    let tasksForTodolist = task
     if (filter === 'active') {
-      tasksForTodolist = task.filter(t => t.status === TaskStatuses.New);
+      tasksForTodolist = task.filter(t => t.status === TaskStatuses.New)
     }
     if (filter === 'completed') {
-      tasksForTodolist = task.filter(t => t.status === TaskStatuses.Completed);
+      tasksForTodolist = task.filter(t => t.status === TaskStatuses.Completed)
     }
-    return tasksForTodolist;
-  };
+    return tasksForTodolist
+  }
 
   const todolist = todolists.map(tl => {
-    const filteredTasks = getFilteredTasks(tasks[tl.id], tl.filter);
+    const filteredTasks = getFilteredTasks(tasks[tl.id], tl.filter)
     return (
       <Grid
         item
@@ -248,8 +256,8 @@ const App: React.FC = () => {
           />
         </Paper>
       </Grid>
-    );
-  });
+    )
+  })
 
   return (
     <div className="App">
@@ -261,7 +269,7 @@ const App: React.FC = () => {
             aria-label={'menu'}
             sx={{mr: 2}}
           >
-            <Menu/>
+            <Menu />
           </IconButton>
           <Typography
             variant={'h6'}
@@ -278,14 +286,14 @@ const App: React.FC = () => {
       </AppBar>
       <Container fixed>
         <Grid container style={{padding: '20px 0'}}>
-          <AddItemForm addItem={addTodolist}/>
+          <AddItemForm addItem={addTodolist} />
         </Grid>
         <Grid container spacing={3}>
           {todolist}
         </Grid>
       </Container>
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

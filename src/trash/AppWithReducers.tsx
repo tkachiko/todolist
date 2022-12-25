@@ -33,8 +33,8 @@ export const AppWithReducers: React.FC = () => {
   const todolistId_1 = v1()
   const todolistId_2 = v1()
   const [todolists, dispatchToTodolists] = useReducer<Reducer<TodolistDomainType[], TodolistsActionsType>>(todolistsReducer, [
-    {id: todolistId_1, title: 'What to learn', filter: 'all', addedDate: '', order: 0},
-    {id: todolistId_2, title: 'What to buy', filter: 'all', addedDate: '', order: 0},
+    {id: todolistId_1, title: 'What to learn', filter: 'all', addedDate: '', order: 0, entityStatus: 'idle'},
+    {id: todolistId_2, title: 'What to buy', filter: 'all', addedDate: '', order: 0, entityStatus: 'idle'},
   ])
 
   const [tasks, dispatchToTasks] = useReducer<Reducer<TaskStateType, TasksActionsType>>(tasksReducer, {

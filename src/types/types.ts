@@ -1,14 +1,14 @@
 import {
-  addTodolistAC,
+  addTodolistAC, changeTodolistEntityStatusAC,
   changeTodolistFilterAC,
   changeTodolistTitleAC,
   removeTodolistAC,
-  setTodolistsAC
-} from '../features/TodolistsList/todolists-reducer';
-import {addTaskAC, removeTaskAC, setTasksAC, updateTaskAC} from '../features/TodolistsList/tasks-reducer';
-import {AppRootStateType} from '../app/store';
+  setTodolistsAC,
+} from '../features/TodolistsList/todolists-reducer'
+import {addTaskAC, removeTaskAC, setTasksAC, updateTaskAC} from '../features/TodolistsList/tasks-reducer'
+import {AppRootStateType} from '../app/store'
 import {ThunkAction, ThunkDispatch} from 'redux-thunk'
-import {setStatusActionType} from '../app/app-reducer'
+import {setAppStatusAC, setAppErrorAC} from '../app/app-reducer'
 
 // api types
 export type TodolistType = {
@@ -18,7 +18,7 @@ export type TodolistType = {
   order: number
 }
 export type ResponseType<T = {}> = {
-  resultCode: number
+  resultCode: ResultCode
   messages: Array<string>
   fieldsErrors: Array<string>
   data: T
@@ -64,10 +64,17 @@ export enum TaskPriorities {
   Later = 4
 }
 
+export enum ResultCode {
+  SUCCESS = 0,
+  ERROR = 1,
+  CAPTCHA = 10
+}
+
 // todolistsList types
 export type FilterType = 'all' | 'active' | 'completed'
 export type TodolistDomainType = TodolistType & {
   filter: FilterType
+  entityStatus: RequestStatusType
 }
 
 // tasks types
@@ -82,6 +89,9 @@ export type UpdateDomainTaskModelType = {
   startDate?: string
   deadline?: string
 }
+
+// app types
+export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
 //-----------------
 // actions types
@@ -105,12 +115,22 @@ export type TodolistsActionsType =
   | AddTodolistActionType
   | RemoveTodolistActionType
   | SetTodolistsActionType
+  | changeTodolistEntityStatusActionType
 type AddTodolistActionType = ReturnType<typeof addTodolistAC>
 type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>
 type SetTodolistsActionType = ReturnType<typeof setTodolistsAC>
+type changeTodolistEntityStatusActionType = ReturnType<typeof changeTodolistEntityStatusAC>
+
+// app actions types
+export type setStatusActionType = ReturnType<typeof setAppStatusAC>
+export type setErrorActionType = ReturnType<typeof setAppErrorAC>
 
 // all actions types for app
-export type AppActionsType = TodolistsActionsType | TasksActionsType | setStatusActionType
+export type AppActionsType =
+  TodolistsActionsType
+  | TasksActionsType
+  | setStatusActionType
+  | setErrorActionType
 
 export type ThunkAppDispatchType<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, AppActionsType>
 export type AppThunk = ThunkDispatch<AppRootStateType, unknown, AppActionsType>

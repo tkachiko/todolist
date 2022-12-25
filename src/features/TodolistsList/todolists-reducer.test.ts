@@ -12,8 +12,8 @@ import {FilterType, TodolistDomainType} from '../../types/types';
 const todolistId1 = v1();
 const todolistId2 = v1();
 const startState: Array<TodolistDomainType> = [
-  {id: todolistId1, title: 'What to learn', filter: 'all', order: 0, addedDate: ''},
-  {id: todolistId2, title: 'What to buy', filter: 'all', order: 0, addedDate: ''}
+  {id: todolistId1, title: 'What to learn', filter: 'all', order: 0, addedDate: '', entityStatus: 'idle'},
+  {id: todolistId2, title: 'What to buy', filter: 'all', order: 0, addedDate: '', entityStatus: 'idle'}
 ];
 
 test('correct todolist should be removed', () => {
