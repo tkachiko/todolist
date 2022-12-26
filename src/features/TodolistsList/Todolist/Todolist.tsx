@@ -10,22 +10,24 @@ import RemoveCircle from '@mui/icons-material/RemoveCircle'
 import {createTaskTC, getTasksTC} from '../tasks-reducer'
 import {changeTodolistFilterAC, changeTodolistTitleTC, removeTodolistTC} from '../todolists-reducer'
 import {Task} from './Task/Task'
-import {FilterType, RequestStatusType, TaskStatuses, TaskType, TodolistType} from '../../../types/types'
+import {FilterType, TaskStatuses, TaskType, TodolistDomainType} from '../../../types/types'
 import {useAppDispatch, useAppSelector} from '../../../app/hooks'
 
-type TodolistPropsType = {
-  todolist: TodolistType
-  filter: FilterType
-  entityStatus: RequestStatusType
+type PropsType = {
+  todolist: TodolistDomainType
+  demo?: boolean
 }
 
-export const Todolist: FC<TodolistPropsType> = memo(({todolist, filter, entityStatus}) => {
-  const {id, title} = todolist
+export const Todolist: FC<PropsType> = memo(({todolist, demo = false}) => {
+  const {id, title, filter, entityStatus} = todolist
 
   let tasks = useAppSelector<Array<TaskType>>(state => state.tasks[id])
   const dispatch = useAppDispatch()
 
   useEffect(() => {
+    if (demo) {
+      return
+    }
     dispatch(getTasksTC(id))
   }, [dispatch, id])
 

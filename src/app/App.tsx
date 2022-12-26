@@ -13,7 +13,11 @@ import {useAppSelector} from './hooks'
 import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar'
 import {RequestStatusType} from '../types/types'
 
-export const App: FC = () => {
+type PropsType = {
+  demo?: boolean
+}
+
+export const App: FC<PropsType> = ({demo = false}) => {
   const status = useAppSelector<RequestStatusType>(state => state.app.status)
   const error = useAppSelector(state => state.app.error)
   return (
@@ -44,7 +48,7 @@ export const App: FC = () => {
         {status === 'loading' && <LinearProgress color={'secondary'} />}
       </AppBar>
       <Container fixed>
-        <TodolistsList />
+        <TodolistsList demo={demo} />
       </Container>
     </div>
   )

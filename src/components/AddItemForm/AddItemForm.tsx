@@ -8,7 +8,7 @@ type AddItemFormPropsType = {
   disabled?: boolean
 }
 
-export const AddItemForm: FC<AddItemFormPropsType> = memo((props) => {
+export const AddItemForm: FC<AddItemFormPropsType> = memo(({addItem, disabled = false}) => {
   const [title, setTitle] = useState<string>('')
   const [error, setError] = useState<string | null>(null)
 
@@ -16,9 +16,9 @@ export const AddItemForm: FC<AddItemFormPropsType> = memo((props) => {
     setTitle(e.currentTarget.value)
     error && setError('Title is required')
   }
-  const addItem = (): void => {
+  const addItemHandler = (): void => {
     if (title.trim() !== '') {
-      props.addItem(title.trim())
+      addItem(title.trim())
     } else {
       setError('Title is required')
     }
@@ -27,7 +27,7 @@ export const AddItemForm: FC<AddItemFormPropsType> = memo((props) => {
   const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>): void => {
     if (error) setError(null)
     if (e.key === 'Enter') {
-      addItem()
+      addItemHandler()
     }
   }
 
@@ -43,12 +43,12 @@ export const AddItemForm: FC<AddItemFormPropsType> = memo((props) => {
         label={'Title'}
         error={!!error}
         helperText={error && 'Title is required!'}
-        disabled={props.disabled}
+        disabled={disabled}
       />
-      <IconButton onClick={addItem}
+      <IconButton onClick={addItemHandler}
                   disabled={true}>
         <AddCircle
-          color={props.disabled ? 'disabled' : 'primary'}
+          color={disabled ? 'disabled' : 'primary'}
         />
       </IconButton>
     </div>
