@@ -43,6 +43,7 @@ const App: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
+        entityStatus: 'idle'
       },
       {
         id: v1(),
@@ -55,6 +56,7 @@ const App: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
+        entityStatus: 'idle'
       },
       {
         id: v1(),
@@ -67,6 +69,7 @@ const App: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
+        entityStatus: 'idle'
       },
       {
         id: v1(),
@@ -79,6 +82,7 @@ const App: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
+        entityStatus: 'idle'
       },
       {
         id: v1(),
@@ -91,6 +95,7 @@ const App: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
+        entityStatus: 'idle'
       },
     ],
     [todolistId_2]: [
@@ -105,6 +110,7 @@ const App: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
+        entityStatus: 'idle'
       },
       {
         id: v1(),
@@ -117,6 +123,7 @@ const App: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
+        entityStatus: 'idle'
       },
       {
         id: v1(),
@@ -129,6 +136,7 @@ const App: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
+        entityStatus: 'idle'
       },
       {
         id: v1(),
@@ -141,6 +149,7 @@ const App: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
+        entityStatus: 'idle'
       },
       {
         id: v1(),
@@ -153,6 +162,7 @@ const App: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
+        entityStatus: 'idle'
       },
     ],
   })
@@ -176,6 +186,7 @@ const App: React.FC = () => {
       order: 0,
       priority: TaskPriorities.Low,
       description: '',
+      entityStatus: 'idle'
     }
     setTasks({
       ...tasks,

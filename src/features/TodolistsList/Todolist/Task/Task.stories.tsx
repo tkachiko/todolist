@@ -24,7 +24,8 @@ export default {
       deadline: '',
       order: 0,
       priority: TaskPriorities.Low,
-      description: ''
+      description: '',
+      entityStatus: 'idle'
     },
     todolistId: 'todolistId',
   },
@@ -50,6 +51,7 @@ TaskIsNotDoneStory.args = {
     deadline: '',
     order: 0,
     priority: TaskPriorities.Low,
-    description: ''
+    description: '',
+    entityStatus: 'idle'
   },
 };

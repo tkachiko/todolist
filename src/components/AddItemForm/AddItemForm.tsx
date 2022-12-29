@@ -46,7 +46,7 @@ export const AddItemForm: FC<AddItemFormPropsType> = memo(({addItem, disabled = 
         disabled={disabled}
       />
       <IconButton onClick={addItemHandler}
-                  disabled={true}>
+                  disabled={disabled}>
         <AddCircle
           color={disabled ? 'disabled' : 'primary'}
         />

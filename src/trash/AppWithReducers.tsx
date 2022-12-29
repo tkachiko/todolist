@@ -50,6 +50,7 @@ export const AppWithReducers: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
+        entityStatus: 'idle'
       },
       {
         id: v1(),
@@ -62,6 +63,7 @@ export const AppWithReducers: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
+        entityStatus: 'idle'
       },
       {
         id: v1(),
@@ -74,6 +76,7 @@ export const AppWithReducers: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
+        entityStatus: 'idle'
       },
       {
         id: v1(),
@@ -86,6 +89,7 @@ export const AppWithReducers: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
+        entityStatus: 'idle'
       },
       {
         id: v1(),
@@ -98,6 +102,7 @@ export const AppWithReducers: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
+        entityStatus: 'idle'
       },
     ],
     [todolistId_2]: [
@@ -112,6 +117,7 @@ export const AppWithReducers: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
+        entityStatus: 'idle'
       },
       {
         id: v1(),
@@ -124,6 +130,7 @@ export const AppWithReducers: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
+        entityStatus: 'idle'
       },
       {
         id: v1(),
@@ -136,6 +143,7 @@ export const AppWithReducers: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
+        entityStatus: 'idle'
       },
       {
         id: v1(),
@@ -148,6 +156,7 @@ export const AppWithReducers: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
+        entityStatus: 'idle'
       },
       {
         id: v1(),
@@ -160,6 +169,7 @@ export const AppWithReducers: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
+        entityStatus: 'idle'
       },
     ],
   })
@@ -181,6 +191,7 @@ export const AppWithReducers: React.FC = () => {
       order: 0,
       priority: TaskPriorities.Low,
       description: '',
+      entityStatus: 'idle'
     })
     dispatchToTasks(action)
   }

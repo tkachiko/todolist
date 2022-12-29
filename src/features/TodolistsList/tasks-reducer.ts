@@ -1,4 +1,5 @@
 import {
+  RequestStatusType,
   ResultCode,
   TasksActionsType,
   TaskStateType,
@@ -10,7 +11,12 @@ import {
 import {todolistAPI} from '../../api/todolist-api'
 import {AppRootStateType} from '../../app/store'
 import {setAppErrorAC, setAppStatusAC} from '../../app/app-reducer'
-import {ADD_TODOLIST, changeTodolistEntityStatusAC, REMOVE_TODOLIST, SET_TODOS} from './todolists-reducer'
+import {
+  ADD_TODOLIST,
+  changeTodolistEntityStatusAC,
+  REMOVE_TODOLIST,
+  SET_TODOS,
+} from './todolists-reducer'
 import axios, {AxiosError} from 'axios'
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils'
 
@@ -18,6 +24,7 @@ export const REMOVE_TASK = 'todolist/tasks/REMOVE_TASK'
 export const ADD_TASK = 'todolist/tasks/ADD_TASK'
 export const UPDATE_TASK = 'todolist/tasks/UPDATE_TASK'
 export const SET_TASKS = 'todolist/tasks/SET_TASKS'
+export const SET_ENTITY_STATUS = 'todolist/tasks/SET_ENTITY_STATUS'
 
 const initialState: TaskStateType = {}
 
@@ -51,6 +58,12 @@ export const tasksReducer = (state = initialState, action: TasksActionsType) => 
       return stateCopy
     case SET_TASKS:
       return {...state, [action.todolistId]: action.tasks}
+    case SET_ENTITY_STATUS:
+      return {
+        ...state,
+        [action.todolistId]: state[action.todolistId]
+          .map(t => t.id === action.taskId ? {...t, entityStatus: action.entityStatus} : t),
+      }
     default:
       return state
   }
@@ -65,24 +78,46 @@ export const updateTaskAC = (taskId: string, todolistId: string, model: UpdateDo
   ({type: UPDATE_TASK, taskId, todolistId, model} as const)
 export const setTasksAC = (tasks: TaskType[], todolistId: string) =>
   ({type: SET_TASKS, tasks, todolistId} as const)
+export const changeTaskEntityStatusAC = (taskId: string, todolistId: string, entityStatus: RequestStatusType) =>
+  ({type: SET_ENTITY_STATUS, taskId, todolistId, entityStatus} as const)
 
 // thunks
 export const getTasksTC = (todolistId: string): ThunkAppDispatchType => async (dispatch) => {
   dispatch(setAppStatusAC('loading'))
-  const res = await todolistAPI.getTasks(todolistId)
-  dispatch(setTasksAC(res.data.items, todolistId))
-  dispatch(setAppStatusAC('succeeded'))
+  try {
+    const res = await todolistAPI.getTasks(todolistId)
+    dispatch(setTasksAC(res.data.items, todolistId))
+    dispatch(setAppStatusAC('succeeded'))
+  } catch (e) {
+    if (axios.isAxiosError<AxiosError<{ message: string }>>(e)) {
+      const error = e.response ? e.response.data.message : e.message
+      handleServerNetworkError(error, dispatch)
+    } else {
+      dispatch(setAppErrorAC('An unexpected error occurred'))
+    }
+  }
 }
 export const removeTaskTC = (taskId: string, todolistId: string): ThunkAppDispatchType => async (dispatch) => {
   dispatch(setAppStatusAC('loading'))
-  dispatch(changeTodolistEntityStatusAC(todolistId, 'loading'))
-  await todolistAPI.deleteTask(todolistId, taskId)
-  dispatch(removeTaskAC(taskId, todolistId))
-  dispatch(setAppStatusAC('succeeded'))
-  dispatch(changeTodolistEntityStatusAC(todolistId, 'idle'))
+  dispatch(changeTaskEntityStatusAC(taskId, todolistId, 'loading'))
+  try {
+    await todolistAPI.deleteTask(todolistId, taskId)
+    dispatch(removeTaskAC(taskId, todolistId))
+    dispatch(setAppStatusAC('succeeded'))
+  } catch (e) {
+    if (axios.isAxiosError<AxiosError<{ message: string }>>(e)) {
+      const error = e.response ? e.response.data.message : e.message
+      handleServerNetworkError(error, dispatch)
+    } else {
+      dispatch(setAppErrorAC('An unexpected error occurred'))
+    }
+  } finally {
+    dispatch(changeTaskEntityStatusAC(taskId, todolistId, 'idle'))
+  }
 }
 export const createTaskTC = (todolistId: string, title: string): ThunkAppDispatchType => async (dispatch) => {
   dispatch(setAppStatusAC('loading'))
+  dispatch(changeTodolistEntityStatusAC(todolistId, 'loading'))
   try {
     const res = await todolistAPI.createTask(todolistId, title)
     if (res.data.resultCode === ResultCode.SUCCESS) {
@@ -98,10 +133,14 @@ export const createTaskTC = (todolistId: string, title: string): ThunkAppDispatc
     } else {
       dispatch(setAppErrorAC('An unexpected error occurred'))
     }
+  } finally {
+    dispatch(changeTodolistEntityStatusAC(todolistId, 'idle'))
   }
 }
 export const updateTaskTC = (todolistId: string, taskId: string, domainModel: UpdateDomainTaskModelType): ThunkAppDispatchType => async (dispatch, getState: () => AppRootStateType) => {
   dispatch(setAppStatusAC('loading'))
+  dispatch(changeTaskEntityStatusAC(taskId, todolistId, 'loading'))
+
   const task = getState().tasks[todolistId].find(t => t.id === taskId)
 
   if (!task) console.warn('Task not found in the state')
@@ -130,6 +169,8 @@ export const updateTaskTC = (todolistId: string, taskId: string, domainModel: Up
       } else {
         dispatch(setAppErrorAC('An unexpected error occurred'))
       }
+    } finally {
+      dispatch(changeTaskEntityStatusAC(taskId, todolistId, 'idle'))
     }
   }
 }

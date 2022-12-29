@@ -1,16 +1,16 @@
-import React, {ChangeEvent, useEffect} from 'react';
-import {AddItemForm} from '../components/AddItemForm/AddItemForm';
-import {EditableSpan} from '../components/EditableSpan/EditableSpan';
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import Typography from '@mui/material/Typography';
-import RemoveCircle from '@mui/icons-material/RemoveCircle';
-import Checkbox from '@mui/material/Checkbox';
-import {getTasksTC} from '../features/TodolistsList/tasks-reducer';
-import {FilterType, TaskStatuses, TaskType} from '../types/types';
+import React, {ChangeEvent, useEffect} from 'react'
+import {AddItemForm} from '../components/AddItemForm/AddItemForm'
+import {EditableSpan} from '../components/EditableSpan/EditableSpan'
+import Button from '@mui/material/Button'
+import ButtonGroup from '@mui/material/ButtonGroup'
+import IconButton from '@mui/material/IconButton'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import Typography from '@mui/material/Typography'
+import RemoveCircle from '@mui/icons-material/RemoveCircle'
+import Checkbox from '@mui/material/Checkbox'
+import {getTasksTC} from '../features/TodolistsList/tasks-reducer'
+import {FilterType, TaskStatuses, TaskType} from '../types/types'
 import {useAppDispatch} from '../app/hooks'
 
 type TodolistPropsType = {
@@ -29,18 +29,18 @@ type TodolistPropsType = {
 
 export const Todolist: React.FC<TodolistPropsType> = (props) => {
 
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(getTasksTC(props.todolistId));
-  }, []);
+    dispatch(getTasksTC(props.todolistId))
+  }, [])
 
   const getTasksListItem = (t: TaskType) => {
-    const removeTask = () => props.removeTask(t.id, props.todolistId);
-    const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => props.changeTaskStatus(t.id, props.todolistId, (e.currentTarget.checked ? TaskStatuses.New : TaskStatuses.Completed));
-    const changeTaskTitle = (title: string) => props.changeTaskTitle(t.id, title, props.todolistId);
+    const removeTask = () => props.removeTask(t.id, props.todolistId)
+    const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => props.changeTaskStatus(t.id, props.todolistId, (e.currentTarget.checked ? TaskStatuses.New : TaskStatuses.Completed))
+    const changeTaskTitle = (title: string) => props.changeTaskTitle(t.id, title, props.todolistId)
 
-    const isDone = t.status === TaskStatuses.Completed;
+    const isDone = t.status === TaskStatuses.Completed
 
     return (
       <ListItem
@@ -49,7 +49,7 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
         style={{
           padding: '0px',
           justifyContent: 'space-between',
-          textDecoration: isDone ? 'line-through' : 'none'
+          textDecoration: isDone ? 'line-through' : 'none',
         }}
       >
         <Checkbox
@@ -57,7 +57,10 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
           onChange={changeTaskStatusHandler}
           size={'small'}
         />
-        <EditableSpan value={t.title} onChange={changeTaskTitle}/>
+        <EditableSpan value={t.title}
+                      onChange={changeTaskTitle}
+                      disabled={false}
+        />
         <IconButton onClick={removeTask}>
           <RemoveCircle
             color={'secondary'}
@@ -65,22 +68,22 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
           />
         </IconButton>
       </ListItem>
-    );
-  };
+    )
+  }
 
   const tasksList = props.tasks.length
     ? <List>{props.tasks.map(getTasksListItem)}</List>
-    : <div style={{margin: '10px 0'}}>Your task list is empty :(</div>;
+    : <div style={{margin: '10px 0'}}>Your task list is empty :(</div>
   const handlerCreator = (filter: FilterType) => () => {
-    props.changeTodolistFilter(filter, props.todolistId);
-  };
+    props.changeTodolistFilter(filter, props.todolistId)
+  }
   const addTask = (title: string) => {
-    props.addTask(props.todolistId, title);
-  };
+    props.addTask(props.todolistId, title)
+  }
   const removeTodolist = () => {
-    props.removeTodolist(props.todolistId);
-  };
-  const changeTodolistTitle = (title: string) => props.changeTodolistTitle(title, props.todolistId);
+    props.removeTodolist(props.todolistId)
+  }
+  const changeTodolistTitle = (title: string) => props.changeTodolistTitle(title, props.todolistId)
 
   return (
     <div>
@@ -89,7 +92,10 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
         align={'center'}
         style={{fontWeight: 'bold', marginBottom: '20px'}}
       >
-        <EditableSpan value={props.title} onChange={changeTodolistTitle}/>
+        <EditableSpan value={props.title}
+                      onChange={changeTodolistTitle}
+                      disabled={false}
+        />
         <IconButton
           size={'small'}
           onClick={removeTodolist}
@@ -98,7 +104,7 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
           fontSize={'small'}
         /></IconButton>
       </Typography>
-      <AddItemForm addItem={addTask}/>
+      <AddItemForm addItem={addTask} />
       {tasksList}
       <div>
         <ButtonGroup
@@ -127,5 +133,5 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
         </ButtonGroup>
       </div>
     </div>
-  );
-};
+  )
+}

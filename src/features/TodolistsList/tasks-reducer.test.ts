@@ -1,6 +1,13 @@
-import {addTaskAC, removeTaskAC, setTasksAC, tasksReducer, updateTaskAC} from './tasks-reducer';
-import {addTodolistAC, removeTodolistAC, setTodolistsAC, todolistsReducer} from './todolists-reducer';
-import {TaskPriorities, TaskStateType, TaskStatuses, TodolistDomainType} from '../../types/types';
+import {
+  addTaskAC,
+  changeTaskEntityStatusAC,
+  removeTaskAC,
+  setTasksAC,
+  tasksReducer,
+  updateTaskAC,
+} from './tasks-reducer'
+import {addTodolistAC, removeTodolistAC, setTodolistsAC, todolistsReducer} from './todolists-reducer'
+import {RequestStatusType, TaskPriorities, TaskStateType, TaskStatuses, TodolistDomainType} from '../../types/types'
 
 let startState: TaskStateType;
 
@@ -17,7 +24,8 @@ beforeEach(() => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
+        entityStatus: 'idle'
       },
       {
         id: '2',
@@ -29,7 +37,8 @@ beforeEach(() => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
+        entityStatus: 'idle'
       },
       {
         id: '3',
@@ -41,7 +50,8 @@ beforeEach(() => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
+        entityStatus: 'idle'
       }
     ],
     'todolistId2': [
@@ -55,7 +65,8 @@ beforeEach(() => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
+        entityStatus: 'idle'
       },
       {
         id: '2',
@@ -67,7 +78,8 @@ beforeEach(() => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
+        entityStatus: 'idle'
       },
       {
         id: '3',
@@ -79,7 +91,8 @@ beforeEach(() => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
+        entityStatus: 'idle'
       }
     ]
   };
@@ -102,7 +115,8 @@ test('correct task should be deleted from the correct array', () => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
+        entityStatus: 'idle'
       },
       {
         id: '2',
@@ -114,7 +128,8 @@ test('correct task should be deleted from the correct array', () => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
+        entityStatus: 'idle'
       },
       {
         id: '3',
@@ -126,7 +141,8 @@ test('correct task should be deleted from the correct array', () => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
+        entityStatus: 'idle'
       }
     ],
     'todolistId2': [
@@ -140,7 +156,8 @@ test('correct task should be deleted from the correct array', () => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
+        entityStatus: 'idle'
       },
       {
         id: '3',
@@ -152,7 +169,8 @@ test('correct task should be deleted from the correct array', () => {
         deadline: '',
         order: 0,
         priority: TaskPriorities.Low,
-        description: ''
+        description: '',
+        entityStatus: 'idle'
       }
     ]
   });
@@ -168,7 +186,8 @@ test('correct task should be added to the correct array', () => {
     startDate: '',
     deadline: '',
     priority: TaskPriorities.Low,
-    description: ''
+    description: '',
+    entityStatus: 'idle'
   });
 
   const endState: TaskStateType = tasksReducer(startState, action);
@@ -259,4 +278,14 @@ test('tasks should be added for todolist', () => {
 
   expect(endState['todolistId1'].length).toBe(3);
   expect(endState['todolistId2'].length).toBe(0);
+});
+test('correct entity status of task should be changed', () => {
+  let newStatus: RequestStatusType = 'loading';
+
+  const action = changeTaskEntityStatusAC('1', 'todolistId2', newStatus);
+
+  const endState = tasksReducer(startState, action);
+
+  expect(endState['todolistId2'][1].entityStatus).toBe('idle');
+  expect(endState['todolistId2'][0].entityStatus).toBe('loading');
 });

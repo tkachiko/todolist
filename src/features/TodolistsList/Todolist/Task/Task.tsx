@@ -28,6 +28,8 @@ export const Task: FC<TaskPropsType> = memo(({task, todolistId, entityStatus}) =
 
   const isDone = task.status === TaskStatuses.Completed
 
+  const disabled = task.entityStatus === 'loading'
+
   return (
     <ListItem
       key={task.id}
@@ -42,14 +44,17 @@ export const Task: FC<TaskPropsType> = memo(({task, todolistId, entityStatus}) =
         checked={isDone}
         onChange={changeTaskStatus}
         size={'small'}
+        disabled={disabled}
       />
       <EditableSpan value={task.title}
-                    onChange={changeTaskTitle} />
+                    onChange={changeTaskTitle}
+                    disabled={disabled}
+      />
       <IconButton onClick={removeTask}
-                  disabled={entityStatus === 'loading'}
+                  disabled={disabled}
       >
         <RemoveCircle
-          color={entityStatus === 'loading' ? 'disabled' : 'secondary'}
+          color={disabled ? 'disabled' : 'secondary'}
           fontSize={'small'}
         />
       </IconButton>

@@ -5,7 +5,13 @@ import {
   removeTodolistAC,
   setTodolistsAC,
 } from '../features/TodolistsList/todolists-reducer'
-import {addTaskAC, removeTaskAC, setTasksAC, updateTaskAC} from '../features/TodolistsList/tasks-reducer'
+import {
+  addTaskAC,
+  changeTaskEntityStatusAC,
+  removeTaskAC,
+  setTasksAC,
+  updateTaskAC,
+} from '../features/TodolistsList/tasks-reducer'
 import {AppRootStateType} from '../app/store'
 import {ThunkAction, ThunkDispatch} from 'redux-thunk'
 import {setAppStatusAC, setAppErrorAC} from '../app/app-reducer'
@@ -34,6 +40,7 @@ export type TaskType = {
   todoListId: string
   order: number
   addedDate: string
+  entityStatus: RequestStatusType
 }
 export type UpdateTaskModelType = {
   description: string
@@ -103,6 +110,7 @@ export type TasksActionsType =
   | ReturnType<typeof addTaskAC>
   | ReturnType<typeof updateTaskAC>
   | ReturnType<typeof setTasksAC>
+  | ReturnType<typeof changeTaskEntityStatusAC>
   | AddTodolistActionType
   | RemoveTodolistActionType
   | SetTodolistsActionType

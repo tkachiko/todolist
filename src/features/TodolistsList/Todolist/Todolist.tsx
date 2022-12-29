@@ -29,7 +29,7 @@ export const Todolist: FC<PropsType> = memo(({todolist, demo = false}) => {
       return
     }
     dispatch(getTasksTC(id))
-  }, [dispatch, id])
+  }, [])
 
   const addTask = useCallback((title: string) => {
     dispatch(createTaskTC(id, title))
@@ -57,6 +57,8 @@ export const Todolist: FC<PropsType> = memo(({todolist, demo = false}) => {
 
   const filteredTasks = useMemo(() => getFilteredTasks(tasks, filter), [tasks, filter])
 
+  const disabled = entityStatus === 'loading'
+
   return (
     <div>
       <Typography
@@ -64,17 +66,21 @@ export const Todolist: FC<PropsType> = memo(({todolist, demo = false}) => {
         align={'center'}
         style={{fontWeight: 'bold', marginBottom: '20px'}}
       >
-        <EditableSpan value={title} onChange={changeTodolistTitle} />
+        <EditableSpan value={title}
+                      onChange={changeTodolistTitle}
+                      disabled={disabled}
+        />
         <IconButton
           size={'small'}
           onClick={removeTodolist}
-          disabled={entityStatus === 'loading'}
+          disabled={disabled}
         ><RemoveCircle
-          color={entityStatus === 'loading' ? 'disabled' : 'secondary'}
+          color={disabled ? 'disabled' : 'secondary'}
           fontSize={'small'}
         /></IconButton>
       </Typography>
-      <AddItemForm addItem={addTask} disabled={entityStatus === 'loading'} />
+      <AddItemForm addItem={addTask}
+                   disabled={disabled} />
       {tasks.length
         ? <List>{filteredTasks.map(t => {
           return <Task key={t.id} task={t} todolistId={id} entityStatus={entityStatus} />
