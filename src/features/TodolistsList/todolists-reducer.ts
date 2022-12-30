@@ -11,6 +11,7 @@ import {todolistAPI} from '../../api/todolist-api'
 import {setAppErrorAC, setAppStatusAC} from '../../app/app-reducer'
 import axios, {AxiosError} from 'axios'
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils'
+import {fetchTasksTC} from './tasks-reducer'
 
 export const REMOVE_TODOLIST = 'todolist/todolists/REMOVE_TODOLIST'
 export const ADD_TODOLIST = 'todolist/todolists/ADD_TODOLIST'
@@ -18,6 +19,7 @@ export const CHANGE_TODOLIST_FILTER = 'todolist/todolists/CHANGE_TODOLIST_FILTER
 export const CHANGE_TODOLIST_TITLE = 'todolist/todolists/CHANGE_TODOLIST_TITLE'
 export const SET_TODOS = 'todolist/todolists/SET_TODOS'
 export const SET_ENTITY_STATUS = 'todolist/todolists/SET_ENTITY_STATUS'
+export const CLEAR_DATA = 'todolist/todolists/CLEAR_DATA'
 
 const initialState: TodolistDomainType[] = []
 
@@ -35,6 +37,8 @@ export const todolistsReducer = (state: TodolistDomainType[] = initialState, act
       return action.todolists.map(tl => ({...tl, filter: 'all', entityStatus: 'idle'}))
     case SET_ENTITY_STATUS:
       return state.map(tl => tl.id === action.id ? {...tl, entityStatus: action.entityStatus} : tl)
+    case CLEAR_DATA:
+      return []
     default:
       return state
   }
@@ -53,14 +57,19 @@ export const setTodolistsAC = (todolists: TodolistType[]) =>
   ({type: SET_TODOS, todolists} as const)
 export const changeTodolistEntityStatusAC = (id: string, entityStatus: RequestStatusType) =>
   ({type: SET_ENTITY_STATUS, id, entityStatus} as const)
+export const clearTodosDataAC = () =>
+  ({type: CLEAR_DATA} as const)
 
 // thunks
-export const getTodolistsTC = (): ThunkAppDispatchType => async dispatch => {
+export const fetchTodolistsTC = (): ThunkAppDispatchType => async dispatch => {
   dispatch(setAppStatusAC('loading'))
   try {
     const res = await todolistAPI.getTodolist()
     dispatch(setTodolistsAC(res.data))
     dispatch(setAppStatusAC('succeeded'))
+    res.data.forEach((tl) => {
+      dispatch(fetchTasksTC(tl.id))
+    })
   } catch (e) {
     if (axios.isAxiosError<AxiosError<{ message: string }>>(e)) {
       const error = e.response ? e.response.data.message : e.message

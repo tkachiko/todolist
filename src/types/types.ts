@@ -1,7 +1,7 @@
 import {
   addTodolistAC, changeTodolistEntityStatusAC,
   changeTodolistFilterAC,
-  changeTodolistTitleAC,
+  changeTodolistTitleAC, clearTodosDataAC,
   removeTodolistAC,
   setTodolistsAC,
 } from '../features/TodolistsList/todolists-reducer'
@@ -14,7 +14,8 @@ import {
 } from '../features/TodolistsList/tasks-reducer'
 import {AppRootStateType} from '../app/store'
 import {ThunkAction, ThunkDispatch} from 'redux-thunk'
-import {setAppStatusAC, setAppErrorAC} from '../app/app-reducer'
+import {setAppStatusAC, setAppErrorAC, setInitializedAC} from '../app/app-reducer'
+import {setIsLoggedInAC} from '../features/Login/auth-reducer'
 
 // api types
 export type TodolistType = {
@@ -77,6 +78,19 @@ export enum ResultCode {
   CAPTCHA = 10
 }
 
+// login types
+export type LoginType = {
+  email: string
+  password: string
+  rememberMe?: boolean
+  captcha?: string
+}
+export type UserType = {
+  id: number
+  email: string
+  login: string
+}
+
 // todolistsList types
 export type FilterType = 'all' | 'active' | 'completed'
 export type TodolistDomainType = TodolistType & {
@@ -114,12 +128,14 @@ export type TasksActionsType =
   | AddTodolistActionType
   | RemoveTodolistActionType
   | SetTodolistsActionType
+  | clearTodosDataActionType
 
 // todolists actions type
 export type TodolistsActionsType =
   | ReturnType<typeof addTodolistAC>
   | ReturnType<typeof changeTodolistFilterAC>
   | ReturnType<typeof changeTodolistTitleAC>
+  | clearTodosDataActionType
   | AddTodolistActionType
   | RemoveTodolistActionType
   | SetTodolistsActionType
@@ -128,17 +144,30 @@ type AddTodolistActionType = ReturnType<typeof addTodolistAC>
 type RemoveTodolistActionType = ReturnType<typeof removeTodolistAC>
 type SetTodolistsActionType = ReturnType<typeof setTodolistsAC>
 type changeTodolistEntityStatusActionType = ReturnType<typeof changeTodolistEntityStatusAC>
+type clearTodosDataActionType = ReturnType<typeof clearTodosDataAC>
 
 // app actions types
-export type setStatusActionType = ReturnType<typeof setAppStatusAC>
-export type setErrorActionType = ReturnType<typeof setAppErrorAC>
+export type SetStatusActionType = ReturnType<typeof setAppStatusAC>
+export type SetErrorActionType = ReturnType<typeof setAppErrorAC>
+export type SetInitializedActionType = ReturnType<typeof setInitializedAC>
+export type AppActionsType =
+  | SetStatusActionType
+  | SetErrorActionType
+  | SetInitializedActionType
+
+// auth actions types
+export type SetIsLoggedInType = ReturnType<typeof setIsLoggedInAC>
+export type AuthActionsType =
+  | SetIsLoggedInType
 
 // all actions types for app
-export type AppActionsType =
+export type ActionsType =
   TodolistsActionsType
   | TasksActionsType
-  | setStatusActionType
-  | setErrorActionType
+  | SetStatusActionType
+  | SetErrorActionType
+  | SetIsLoggedInType
+  | SetInitializedActionType
 
-export type ThunkAppDispatchType<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, AppActionsType>
-export type AppThunk = ThunkDispatch<AppRootStateType, unknown, AppActionsType>
+export type ThunkAppDispatchType<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, ActionsType>
+export type AppThunk = ThunkDispatch<AppRootStateType, unknown, ActionsType>

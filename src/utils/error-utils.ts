@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux'
-import {ResponseType, setErrorActionType, setStatusActionType} from '../types/types'
+import {ResponseType, SetErrorActionType, SetStatusActionType} from '../types/types'
 import {setAppErrorAC, setAppStatusAC} from '../app/app-reducer'
 
 // generic function
@@ -17,4 +17,4 @@ export const handleServerNetworkError = (error: string, dispatch: ErrorUtilsDisp
   dispatch(setAppStatusAC('failed'))
 }
 
-type ErrorUtilsDispatchType = Dispatch<setErrorActionType | setStatusActionType>
+type ErrorUtilsDispatchType = Dispatch<SetErrorActionType | SetStatusActionType>

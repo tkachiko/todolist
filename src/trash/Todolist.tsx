@@ -9,7 +9,7 @@ import ListItem from '@mui/material/ListItem'
 import Typography from '@mui/material/Typography'
 import RemoveCircle from '@mui/icons-material/RemoveCircle'
 import Checkbox from '@mui/material/Checkbox'
-import {getTasksTC} from '../features/TodolistsList/tasks-reducer'
+import {fetchTasksTC} from '../features/TodolistsList/tasks-reducer'
 import {FilterType, TaskStatuses, TaskType} from '../types/types'
 import {useAppDispatch} from '../app/hooks'
 
@@ -32,7 +32,7 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(getTasksTC(props.todolistId))
+    dispatch(fetchTasksTC(props.todolistId))
   }, [])
 
   const getTasksListItem = (t: TaskType) => {

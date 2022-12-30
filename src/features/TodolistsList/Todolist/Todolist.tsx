@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton'
 import List from '@mui/material/List'
 import Typography from '@mui/material/Typography'
 import RemoveCircle from '@mui/icons-material/RemoveCircle'
-import {createTaskTC, getTasksTC} from '../tasks-reducer'
+import {createTaskTC, fetchTasksTC} from '../tasks-reducer'
 import {changeTodolistFilterAC, changeTodolistTitleTC, removeTodolistTC} from '../todolists-reducer'
 import {Task} from './Task/Task'
 import {FilterType, TaskStatuses, TaskType, TodolistDomainType} from '../../../types/types'
@@ -28,7 +28,7 @@ export const Todolist: FC<PropsType> = memo(({todolist, demo = false}) => {
     if (demo) {
       return
     }
-    dispatch(getTasksTC(id))
+    dispatch(fetchTasksTC(id))
   }, [])
 
   const addTask = useCallback((title: string) => {

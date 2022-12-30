@@ -1,11 +1,12 @@
-import {FC, useCallback, useEffect} from 'react'
+import React, {FC, useCallback, useEffect} from 'react'
 import {TodolistDomainType} from '../../types/types'
-import {addTodolistTC, getTodolistsTC} from './todolists-reducer'
+import {addTodolistTC, fetchTodolistsTC} from './todolists-reducer'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm'
 import {Todolist} from './Todolist/Todolist'
 import {useAppDispatch, useAppSelector} from '../../app/hooks'
+import {Navigate} from 'react-router-dom'
 
 type PropsType = {
   demo?: boolean
@@ -14,17 +15,22 @@ type PropsType = {
 export const TodolistsList: FC<PropsType> = ({demo = false}) => {
   const todolists = useAppSelector<Array<TodolistDomainType>>(state => state.todolists)
   const dispatch = useAppDispatch()
+  const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
 
   const addTodolist = useCallback((title: string): void => {
     dispatch(addTodolistTC(title))
   }, [dispatch])
 
   useEffect(() => {
-    if (demo) {
+    if (demo || !isLoggedIn) {
       return
     }
-    dispatch(getTodolistsTC())
-  }, [dispatch])
+    dispatch(fetchTodolistsTC())
+  }, [])
+
+  if (!isLoggedIn) {
+    return <Navigate to={'/login'} />
+  }
 
   return (
     <>

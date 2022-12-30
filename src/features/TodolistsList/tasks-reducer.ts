@@ -13,7 +13,7 @@ import {AppRootStateType} from '../../app/store'
 import {setAppErrorAC, setAppStatusAC} from '../../app/app-reducer'
 import {
   ADD_TODOLIST,
-  changeTodolistEntityStatusAC,
+  changeTodolistEntityStatusAC, CLEAR_DATA,
   REMOVE_TODOLIST,
   SET_TODOS,
 } from './todolists-reducer'
@@ -64,6 +64,8 @@ export const tasksReducer = (state = initialState, action: TasksActionsType) => 
         [action.todolistId]: state[action.todolistId]
           .map(t => t.id === action.taskId ? {...t, entityStatus: action.entityStatus} : t),
       }
+    case CLEAR_DATA:
+      return {}
     default:
       return state
   }
@@ -82,7 +84,7 @@ export const changeTaskEntityStatusAC = (taskId: string, todolistId: string, ent
   ({type: SET_ENTITY_STATUS, taskId, todolistId, entityStatus} as const)
 
 // thunks
-export const getTasksTC = (todolistId: string): ThunkAppDispatchType => async (dispatch) => {
+export const fetchTasksTC = (todolistId: string): ThunkAppDispatchType => async (dispatch) => {
   dispatch(setAppStatusAC('loading'))
   try {
     const res = await todolistAPI.getTasks(todolistId)

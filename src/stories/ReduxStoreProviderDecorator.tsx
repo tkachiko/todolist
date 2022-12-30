@@ -1,5 +1,5 @@
-import {Provider} from 'react-redux';
-import {ReactNode} from 'react';
+import {Provider} from 'react-redux'
+import {ReactNode} from 'react'
 import {applyMiddleware, combineReducers, createStore} from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import {tasksReducer} from '../features/TodolistsList/tasks-reducer'
@@ -33,7 +33,7 @@ const initialGlobalState: AppRootStateType = {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
-        entityStatus: 'idle'
+        entityStatus: 'idle',
       },
       {
         id: v1(),
@@ -46,7 +46,7 @@ const initialGlobalState: AppRootStateType = {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
-        entityStatus: 'idle'
+        entityStatus: 'idle',
       },
     ],
     'todolistId2': [
@@ -61,7 +61,7 @@ const initialGlobalState: AppRootStateType = {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
-        entityStatus: 'idle'
+        entityStatus: 'idle',
       },
       {
         id: v1(),
@@ -74,18 +74,22 @@ const initialGlobalState: AppRootStateType = {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
-        entityStatus: 'idle'
+        entityStatus: 'idle',
       },
     ],
   },
   app: {
     status: 'loading',
-    error: null as null | string
+    error: null as null | string,
+    isInitialized: false
+  },
+  auth: {
+    isLoggedIn: false,
   },
 }
 
 export const storyBookStore = createStore(rootReducer, initialGlobalState, applyMiddleware(thunkMiddleware))
 
 export const ReduxStoreProviderDecorator = (storyFn: () => ReactNode) => {
-  return <Provider store={storyBookStore}>{storyFn()}</Provider>;
-};
+  return <Provider store={storyBookStore}>{storyFn()}</Provider>
+}
