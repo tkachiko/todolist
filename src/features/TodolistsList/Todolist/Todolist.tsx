@@ -41,7 +41,7 @@ export const Todolist: FC<PropsType> = memo(({todolist, demo = false}) => {
     dispatch(changeTodolistTitleTC(id, title))
   }, [dispatch, id])
   const handlerCreator = useCallback((filter: FilterType) => () => {
-    dispatch(changeTodolistFilterAC(id, filter))
+    dispatch(changeTodolistFilterAC({id, filter}))
   }, [dispatch, id])
 
   const getFilteredTasks = (task: Array<TaskType>, filter: FilterType): Array<TaskType> => {

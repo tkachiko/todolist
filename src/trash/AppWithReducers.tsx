@@ -22,11 +22,13 @@ import {
 import {addTaskAC, removeTaskAC, tasksReducer, updateTaskAC} from '../features/TodolistsList/tasks-reducer'
 import {
   FilterType,
-  TaskPriorities, TasksActionsType,
+  TaskPriorities,
+  TasksActionsType,
   TaskStateType,
   TaskStatuses,
   TaskType,
-  TodolistDomainType, TodolistsActionsType,
+  TodolistDomainType,
+  TodolistsActionsType,
 } from '../types/types'
 
 export const AppWithReducers: React.FC = () => {
@@ -50,7 +52,7 @@ export const AppWithReducers: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
-        entityStatus: 'idle'
+        entityStatus: 'idle',
       },
       {
         id: v1(),
@@ -63,7 +65,7 @@ export const AppWithReducers: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
-        entityStatus: 'idle'
+        entityStatus: 'idle',
       },
       {
         id: v1(),
@@ -76,7 +78,7 @@ export const AppWithReducers: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
-        entityStatus: 'idle'
+        entityStatus: 'idle',
       },
       {
         id: v1(),
@@ -89,7 +91,7 @@ export const AppWithReducers: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
-        entityStatus: 'idle'
+        entityStatus: 'idle',
       },
       {
         id: v1(),
@@ -102,7 +104,7 @@ export const AppWithReducers: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
-        entityStatus: 'idle'
+        entityStatus: 'idle',
       },
     ],
     [todolistId_2]: [
@@ -117,7 +119,7 @@ export const AppWithReducers: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
-        entityStatus: 'idle'
+        entityStatus: 'idle',
       },
       {
         id: v1(),
@@ -130,7 +132,7 @@ export const AppWithReducers: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
-        entityStatus: 'idle'
+        entityStatus: 'idle',
       },
       {
         id: v1(),
@@ -143,7 +145,7 @@ export const AppWithReducers: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
-        entityStatus: 'idle'
+        entityStatus: 'idle',
       },
       {
         id: v1(),
@@ -156,7 +158,7 @@ export const AppWithReducers: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
-        entityStatus: 'idle'
+        entityStatus: 'idle',
       },
       {
         id: v1(),
@@ -169,58 +171,60 @@ export const AppWithReducers: React.FC = () => {
         order: 0,
         priority: TaskPriorities.Low,
         description: '',
-        entityStatus: 'idle'
+        entityStatus: 'idle',
       },
     ],
   })
 
   // tasks
   const removeTask = (taskId: string, todolistId: string) => {
-    const action = removeTaskAC(taskId, todolistId)
+    const action = removeTaskAC({taskId, todolistId})
     dispatchToTasks(action)
   }
   const addTask = (todolistId: string, title: string): void => {
     const action = addTaskAC({
-      id: '1',
-      title: title,
-      status: TaskStatuses.New,
-      todoListId: todolistId,
-      addedDate: '',
-      startDate: '',
-      deadline: '',
-      order: 0,
-      priority: TaskPriorities.Low,
-      description: '',
-      entityStatus: 'idle'
+      task: {
+        id: '1',
+        title: title,
+        status: TaskStatuses.New,
+        todoListId: todolistId,
+        addedDate: '',
+        startDate: '',
+        deadline: '',
+        order: 0,
+        priority: TaskPriorities.Low,
+        description: '',
+        entityStatus: 'idle',
+      },
     })
     dispatchToTasks(action)
   }
   const changeTaskStatus = (taskId: string, todolistId: string, status: TaskStatuses) => {
-    const action = updateTaskAC(taskId, todolistId, {status})
+    const action = updateTaskAC({taskId, todolistId, model: {status}})
     dispatchToTasks(action)
   }
   const changeTaskTitle = (taskId: string, title: string, todolistId: string) => {
-    const action = updateTaskAC(taskId, todolistId, {title})
+    const action = updateTaskAC({taskId, todolistId, model: {title}})
     dispatchToTasks(action)
   }
 
   //TodolistsList
   const addTodolist = (title: string): void => {
-    const action = addTodolistAC({id: 'todolistId_1', title: title, order: 0, addedDate: ''})
+    const action = addTodolistAC({todolist: {id: 'todolistId_1', title: title, order: 0, addedDate: ''}})
     dispatchToTodolists(action)
     dispatchToTasks(action)
   }
   const removeTodolist = (todolistId: string): void => {
-    const action = removeTodolistAC(todolistId)
+    const action = removeTodolistAC({id: todolistId})
     dispatchToTodolists(action)
     dispatchToTasks(action)
   }
   const changeTodolistFilter = (filter: FilterType, todolistId: string): void => {
-    const action = changeTodolistFilterAC(todolistId, filter)
+    const action = changeTodolistFilterAC({id: todolistId, filter})
     dispatchToTodolists(action)
   }
   const changeTodolistTitle = (title: string, todolistId: string): void => {
-    const action = changeTodolistTitleAC(todolistId, title)
+    const action = changeTodolistTitleAC({id: todolistId, title})
     dispatchToTodolists(action)
   }
 
