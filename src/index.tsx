@@ -6,9 +6,9 @@ import {createTheme, CssBaseline, ThemeProvider} from '@mui/material'
 import {Provider} from 'react-redux'
 import {store} from './app/store'
 import {App} from './app/App'
-import {BrowserRouter} from 'react-router-dom'
+import {HashRouter as Router} from 'react-router-dom'
 
-let theme = createTheme({
+export const theme = createTheme({
   palette: {
     primary: {
       main: '#ec407a',
@@ -28,14 +28,14 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 )
 root.render(
-  <BrowserRouter>
+  <Router>
     <CssBaseline />
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <App />
       </ThemeProvider>
     </Provider>
-  </BrowserRouter>,
+  </Router>,
 )
 
 // If you want to start measuring performance in your app, pass a function

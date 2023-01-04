@@ -13,12 +13,11 @@ const rootReducer = combineReducers({
   auth: authReducer,
 })
 
+export type RootReducerType = typeof rootReducer
+
 export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().prepend(thunkMiddleware),
-  devTools: undefined,
-  enhancers: undefined,
-  preloadedState: undefined,
 })
 
 export type AppRootStateType = ReturnType<typeof rootReducer>

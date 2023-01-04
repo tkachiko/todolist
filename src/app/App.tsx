@@ -29,7 +29,9 @@ export const App: FC<PropsType> = ({demo = false}) => {
   const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
 
   useEffect(() => {
-    dispatch(initializeAppTC())
+    if (!demo) {
+      dispatch(initializeAppTC())
+    }
   }, [])
 
   if (!isInitialized) {

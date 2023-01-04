@@ -22,13 +22,11 @@ import {
 import {addTaskAC, removeTaskAC, tasksReducer, updateTaskAC} from '../features/TodolistsList/tasks-reducer'
 import {
   FilterType,
-  TaskPriorities,
-  TasksActionsType,
+  TaskPriorities, TasksActionsType,
   TaskStateType,
   TaskStatuses,
   TaskType,
-  TodolistDomainType,
-  TodolistsActionsType,
+  TodolistDomainType, TodolistsActionsType,
 } from '../types/types'
 
 export const AppWithReducers: React.FC = () => {
